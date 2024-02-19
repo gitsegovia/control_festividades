@@ -62,6 +62,7 @@ type Event {
   id: UUID!
   name: String!
   year: Int!
+  active: Boolean!
   Summary: [Summary!]
 }
 
@@ -124,6 +125,7 @@ type Mutation {
   createTouristicPlace(input: CreateTouristicPlaceInput!): TouristicPlace!
   createResponsible(input: CreateResponsibleInput!): Responsible!
   createEvent(input: CreateEventInput!): Event!
+  activateEvent(eventId: UUID!): Event!
   createSchedule(input: CreateScheduleInput!): Schedule!
   createCategory(input: CreateCategoryInput!): Category!
   createActivity(input: CreateActivityInput!): Activity!
@@ -188,6 +190,7 @@ input SearchEventInput {
 input CreateEventInput {
   name: String!
   year: Int!
+  active: Boolean!
 }
 
 input SearchScheduleInput {

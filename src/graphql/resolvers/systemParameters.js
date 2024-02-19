@@ -571,13 +571,23 @@ export default {
     },
     createEvent: async (_, { input }, { models }) => {
       try {
-        const { name, year } = input;
+        const { name, year, active } = input;
 
         const result = await models.sequelizeInst.transaction(async (t) => {
           const inpEvent = {
             name,
             year,
+            active,
           };
+
+          if (active === true) {
+            await models.Event.update(
+              { active: false },
+              {
+                transaction: t,
+              }
+            );
+          }
 
           const event = await models.Event.create(
             {
@@ -594,6 +604,38 @@ export default {
         // PRIORITARIO Create error manager to handle internal messages or retries or others
         console.log(error);
         throw new Error("error");
+      }
+    },
+    activateEvent: async (_, { eventId }, { models }) => {
+      try {
+        const eventExist = await models.Event.findByPk(eventId);
+
+        if (!eventExist) {
+          throw "Event not found";
+        }
+
+        const result = await models.sequelizeInst.transaction(async (t) => {
+          await models.Event.update(
+            { active: false },
+            {
+              where: {
+                active: true,
+              },
+              transaction: t,
+            }
+          );
+
+          eventExist.active = true;
+          eventExist.save();
+
+          return eventExist;
+        });
+
+        return result;
+      } catch (error) {
+        // PRIORITARIO Create error manager to handle internal messages or retries or others
+        console.log(error);
+        throw new Error(error);
       }
     },
     createSchedule: async (_, { input }, { models }) => {

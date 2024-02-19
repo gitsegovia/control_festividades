@@ -1,4 +1,4 @@
-import { Model, UUID, UUIDV4, STRING, INTEGER } from "sequelize";
+import { Model, UUID, UUIDV4, STRING, INTEGER, BOOLEAN } from "sequelize";
 
 export default (sequelize) => {
   class Event extends Model {
@@ -28,6 +28,11 @@ export default (sequelize) => {
       year: {
         allowNull: false,
         type: INTEGER,
+      },
+      active: {
+        allowNull: false,
+        type: BOOLEAN,
+        defaultValue: false,
       },
     },
     {
