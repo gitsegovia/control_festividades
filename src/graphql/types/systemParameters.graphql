@@ -1,0 +1,216 @@
+type State {
+  id: UUID!
+  name: String!
+  code: Int
+  iso: String
+  Municipality: [Municipality!]
+}
+
+type StateResult {
+  infoPage: InfoPage
+  results: [State!]
+}
+
+type Municipality {
+  id: UUID!
+  name: String!
+  code: Int
+  Parish: [Parish!]
+}
+
+type MunicipalityResult {
+  infoPage: InfoPage
+  results: [Municipality!]
+}
+
+type Parish {
+  id: UUID!
+  name: String!
+  code: Int
+  TouristicPlace: [TouristicPlace!]
+}
+
+type ParishResult {
+  infoPage: InfoPage
+  results: [Parish!]
+}
+
+type TouristicPlace {
+  id: UUID!
+  name: String!
+  Responsible: Responsible!
+}
+
+type TouristicPlaceResult {
+  infoPage: InfoPage
+  results: [TouristicPlace!]
+}
+
+type Responsible {
+  id: UUID!
+  name: String!
+  phone: String!
+  TouristicPlace: TouristicPlace!
+}
+
+type ResponsibleResult {
+  infoPage: InfoPage
+  results: [Responsible!]
+}
+
+type Event {
+  id: UUID!
+  name: String!
+  year: Int!
+  Summary: [Summary!]
+}
+
+type EventResult {
+  infoPage: InfoPage
+  results: [Event!]
+}
+
+type Schedule {
+  id: UUID!
+  hour: String!
+  Summary: [Summary!]
+}
+
+type ScheduleResult {
+  infoPage: InfoPage
+  results: [Schedule!]
+}
+
+type Category {
+  id: UUID!
+  name: String!
+  Activity: [Activity!]
+}
+
+type CategoryResult {
+  infoPage: InfoPage
+  results: [Category!]
+}
+
+type Activity {
+  id: UUID!
+  name: String!
+  Summary: [Summary!]
+}
+
+type ActivityResult {
+  infoPage: InfoPage
+  results: [Activity!]
+}
+
+type Query {
+  stateListAll(search: SearchStateInput): StateResult!
+  municipalityListAll(search: SearchMunicipalityInput): MunicipalityResult!
+  parishListAll(search: SearchParishInput): ParishResult!
+  touristicPlaceListAll(
+    search: SearchTouristicPlaceInput
+  ): TouristicPlaceResult!
+  responsibleListAll(search: SearchResponsibleInput): ResponsibleResult!
+  eventListAll(search: SearchEventInput): EventResult!
+  scheduleListAll(search: SearchScheduleInput): ScheduleResult!
+  categoryListAll(search: SearchCategoryInput): CategoryResult!
+  activityListAll(search: SearchActivityInput): ActivityResult!
+}
+
+type Mutation {
+  createState(input: CreateStateInput!): State!
+  createMunicipality(input: CreateMunicipalityInput!): Municipality!
+  createParish(input: CreateParishInput!): Parish!
+  createTouristicPlace(input: CreateTouristicPlaceInput!): TouristicPlace!
+  createResponsible(input: CreateResponsibleInput!): Responsible!
+  createEvent(input: CreateEventInput!): Event!
+  createSchedule(input: CreateScheduleInput!): Schedule!
+  createCategory(input: CreateCategoryInput!): Category!
+  createActivity(input: CreateActivityInput!): Activity!
+}
+
+input SearchStateInput {
+  options: OptionsSearch
+}
+
+input CreateStateInput {
+  name: String!
+  code: Int
+  iso: String
+}
+
+input SearchMunicipalityInput {
+  options: OptionsSearch
+  stateId: UUID
+}
+
+input CreateMunicipalityInput {
+  stateId: UUID!
+  name: String!
+  code: Int
+}
+
+input SearchParishInput {
+  options: OptionsSearch
+  municipalityId: UUID
+}
+
+input CreateParishInput {
+  municipalityId: UUID!
+  name: String!
+  code: Int
+}
+
+input SearchTouristicPlaceInput {
+  options: OptionsSearch
+  parishId: UUID
+}
+
+input CreateTouristicPlaceInput {
+  parishId: UUID!
+  name: String!
+}
+
+input SearchResponsibleInput {
+  options: OptionsSearch
+}
+
+input CreateResponsibleInput {
+  touristicPlaceId: UUID!
+  name: String!
+  phone: String!
+}
+
+input SearchEventInput {
+  options: OptionsSearch
+}
+
+input CreateEventInput {
+  name: String!
+  year: Int!
+}
+
+input SearchScheduleInput {
+  options: OptionsSearch
+}
+
+input CreateScheduleInput {
+  hour: String!
+}
+
+input SearchCategoryInput {
+  options: OptionsSearch
+}
+
+input CreateCategoryInput {
+  name: String!
+}
+
+input SearchActivityInput {
+  options: OptionsSearch
+}
+
+input CreateActivityInput {
+  categoryId: UUID!
+  name: String!
+}

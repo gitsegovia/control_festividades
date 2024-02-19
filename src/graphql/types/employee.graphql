@@ -1,0 +1,18 @@
+type Employee {
+  id: UUID!
+  firstName: String!
+  lastName: String!
+  typeDni: String!
+  idnDni: String!
+  gender: String!
+  birthDate: Datatime!
+  address: String
+  position: String!
+  role: String!
+  photo: String!
+  dniImg: String!
+  signature: String
+  nameMessage: String
+  numberEmployee: Int!
+  contractAccepted: Boolean!
+}

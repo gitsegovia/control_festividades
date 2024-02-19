@@ -1,0 +1,4 @@
+type Mutation {
+  createMailRegister: Boolean
+  createVerfPhone(phone: String!): Boolean
+}
