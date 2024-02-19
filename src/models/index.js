@@ -8,6 +8,7 @@ import dbConfig from "../configs/config_db";
 const sequelize = new Sequelize({
   database: dbConfig.database,
   host: dbConfig.host,
+  port: dbConfig.port,
   username: dbConfig.username,
   password: dbConfig.password,
   dialect: "postgres",
