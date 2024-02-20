@@ -1,9 +1,15 @@
-import { Model, UUID, UUIDV4, STRING } from "sequelize";
+import { Model, STRING, UUID, UUIDV4 } from "sequelize";
 
 export default (sequelize) => {
   class Schedule extends Model {
     static associate(models) {
-      // Rest of the associations...
+      Schedule.belongsTo(models.Summary, {
+        foreignKey: {
+          name: "scheduleId",
+          field: "scheduleId",
+        },
+        as: "Summary",
+      });
     }
   }
 
