@@ -38,7 +38,7 @@ type ParishResult {
 type TouristicPlace {
   id: UUID!
   name: String!
-  Responsible: Responsible!
+  Responsible: Responsible
 }
 
 type TouristicPlaceResult {
