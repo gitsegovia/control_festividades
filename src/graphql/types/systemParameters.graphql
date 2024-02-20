@@ -58,19 +58,6 @@ type ResponsibleResult {
   results: [Responsible!]
 }
 
-type Event {
-  id: UUID!
-  name: String!
-  year: Int!
-  active: Boolean!
-  Summary: [Summary!]
-}
-
-type EventResult {
-  infoPage: InfoPage
-  results: [Event!]
-}
-
 type Schedule {
   id: UUID!
   hour: String!
@@ -112,7 +99,6 @@ type Query {
     search: SearchTouristicPlaceInput
   ): TouristicPlaceResult!
   responsibleListAll(search: SearchResponsibleInput): ResponsibleResult!
-  eventListAll(search: SearchEventInput): EventResult!
   scheduleListAll(search: SearchScheduleInput): ScheduleResult!
   categoryListAll(search: SearchCategoryInput): CategoryResult!
   activityListAll(search: SearchActivityInput): ActivityResult!
@@ -124,8 +110,6 @@ type Mutation {
   createParish(input: CreateParishInput!): Parish!
   createTouristicPlace(input: CreateTouristicPlaceInput!): TouristicPlace!
   createResponsible(input: CreateResponsibleInput!): Responsible!
-  createEvent(input: CreateEventInput!): Event!
-  activateEvent(eventId: UUID!): Event!
   createSchedule(input: CreateScheduleInput!): Schedule!
   createCategory(input: CreateCategoryInput!): Category!
   createActivity(input: CreateActivityInput!): Activity!
@@ -181,16 +165,6 @@ input CreateResponsibleInput {
   touristicPlaceId: UUID!
   name: String!
   phone: String!
-}
-
-input SearchEventInput {
-  options: OptionsSearch
-}
-
-input CreateEventInput {
-  name: String!
-  year: Int!
-  active: Boolean!
 }
 
 input SearchScheduleInput {

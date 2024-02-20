@@ -1,0 +1,34 @@
+
+type Event {
+  id: UUID!
+  name: String!
+  year: Int!
+  active: Boolean!
+  Summary: [Summary!]
+}
+
+type EventResult {
+  infoPage: InfoPage
+  results: [Event!]
+}
+
+type Query {
+  eventListAll(search: SearchEventInput): EventResult!
+  eventActive: Event!
+}
+
+type Mutation {
+  createEvent(input: CreateEventInput!): Event!
+  activateEvent(eventId: UUID!): Event!
+}
+
+
+input SearchEventInput {
+  options: OptionsSearch
+}
+
+input CreateEventInput {
+  name: String!
+  year: Int!
+  active: Boolean!
+}

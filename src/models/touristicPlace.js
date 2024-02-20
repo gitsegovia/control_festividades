@@ -1,4 +1,4 @@
-import { Model, UUID, UUIDV4, STRING } from "sequelize";
+import { Model, STRING, UUID, UUIDV4 } from "sequelize";
 
 export default (sequelize) => {
   class TouristicPlace extends Model {
@@ -11,6 +11,14 @@ export default (sequelize) => {
         },
         as: "Parish",
       });
+      TouristicPlace.hasOne(models.Responsible, {
+        foreignKey: {
+          name: "touristicPlaceId",
+          field: "touristicPlaceId",
+        },
+        as: "Responsible",
+      });
+
     }
   }
 

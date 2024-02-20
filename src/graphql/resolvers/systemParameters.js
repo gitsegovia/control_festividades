@@ -245,51 +245,6 @@ export default {
         results: responsible,
       };
     },
-    eventListAll: async (_, { search }, { models }) => {
-      const options = search?.options ?? null;
-      //PRIORITARIO arreglar consulta para que busque las options y filter y segun eso haga las busquedas
-      const optionsFind = {
-        include: [
-          {
-            model: models.Summary,
-            as: "Summary",
-          },
-        ],
-      };
-
-      if (options !== null) {
-        if (options.limit > 0) {
-          optionsFind.limit = options.limit;
-        }
-        if (options.offset > 0) {
-          optionsFind.offset = options.offset;
-        }
-        if (options.orderBy) {
-          optionsFind.order = options.orderBy.map((field, index) => {
-            return [
-              field,
-              options.direction ? options.direction[index] ?? "ASC" : "ASC",
-            ];
-          });
-          optionsFind.include.order = optionsFind.order;
-        }
-      }
-
-      const events = await models.Event.findAll(optionsFind);
-
-      const infoPage = {
-        count: events.length,
-        pages: 1,
-        current: 1,
-        next: false,
-        prev: false,
-      };
-
-      return {
-        infoPage,
-        results: events,
-      };
-    },
     scheduleListAll: async (_, { search }, { models }) => {
       const options = search?.options ?? null;
       //PRIORITARIO arreglar consulta para que busque las options y filter y segun eso haga las busquedas
@@ -567,75 +522,6 @@ export default {
         // PRIORITARIO Create error manager to handle internal messages or retries or others
         console.log(error);
         throw new Error("error");
-      }
-    },
-    createEvent: async (_, { input }, { models }) => {
-      try {
-        const { name, year, active } = input;
-
-        const result = await models.sequelizeInst.transaction(async (t) => {
-          const inpEvent = {
-            name,
-            year,
-            active,
-          };
-
-          if (active === true) {
-            await models.Event.update(
-              { active: false },
-              {
-                transaction: t,
-              }
-            );
-          }
-
-          const event = await models.Event.create(
-            {
-              ...inpEvent,
-            },
-            { transaction: t }
-          );
-
-          return event;
-        });
-
-        return result;
-      } catch (error) {
-        // PRIORITARIO Create error manager to handle internal messages or retries or others
-        console.log(error);
-        throw new Error("error");
-      }
-    },
-    activateEvent: async (_, { eventId }, { models }) => {
-      try {
-        const eventExist = await models.Event.findByPk(eventId);
-
-        if (!eventExist) {
-          throw "Event not found";
-        }
-
-        const result = await models.sequelizeInst.transaction(async (t) => {
-          await models.Event.update(
-            { active: false },
-            {
-              where: {
-                active: true,
-              },
-              transaction: t,
-            }
-          );
-
-          eventExist.active = true;
-          eventExist.save();
-
-          return eventExist;
-        });
-
-        return result;
-      } catch (error) {
-        // PRIORITARIO Create error manager to handle internal messages or retries or others
-        console.log(error);
-        throw new Error(error);
       }
     },
     createSchedule: async (_, { input }, { models }) => {
