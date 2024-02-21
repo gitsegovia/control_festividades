@@ -94,7 +94,7 @@ export default {
             };
           });
 
-          const activity = await models.Summary.createBulk(inpSummary, {
+          const activity = await models.Summary.bulkCreate(inpSummary, {
             transaction: t,
           });
 
