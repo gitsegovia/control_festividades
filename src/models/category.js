@@ -5,8 +5,8 @@ export default (sequelize) => {
     static associate(models) {
       Category.hasMany(models.Activity, {
         foreignKey: {
-          name: "activityId",
-          field: "activityId",
+          name: "categoryId",
+          field: "categoryId",
         },
         as: "Activity",
       });
