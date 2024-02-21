@@ -98,7 +98,7 @@ export default {
             transaction: t,
           });
 
-          return activity;
+          return true;
         });
 
         return result;
