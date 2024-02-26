@@ -1,12 +1,15 @@
 type User {
   id: UUID!
   email: String!
+  status: String!
+  typeUser: String!
   codeCountryPhone: String!
   phone: String!
   validationMail: Boolean!
   validationPhone: Boolean!
   nameUser: String!
   Employee: Employee
+  Responsible: Responsible
 }
 
 type UserResults {
@@ -22,6 +25,15 @@ type Query {
 type Mutation {
   me(token: String!, onTokenExpiration: String): AuthPayLoad!
   loginEmployee(input: LoginInput!): AuthPayLoad!
+  loginResponsible(input: LoginInput!): AuthPayLoad!
+  createUserResponsible(input: CreateUserResponsibleInput!): User!
+  suspendUser(userId: UUID!): Boolean!
+}
+
+input CreateUserResponsibleInput {
+  email: String!
+  password: String!
+  responsibleId: UUID!
 }
 
 input SearchUserInput {

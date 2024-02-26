@@ -51,22 +51,8 @@ export const checkToken = async ({
             const user = await models.User.findByPk(userId, {
               include: [
                 {
-                  model: models.Provider,
-                  as: "Provider",
-                  include: [
-                    {
-                      model: models.ProviderResponsible,
-                      as: "ProviderResponsible",
-                    },
-                    {
-                      model: models.ProviderPersonal,
-                      as: "ProviderPersonal",
-                    },
-                    {
-                      model: models.CategoryCompany,
-                      as: "CategoryCompany",
-                    },
-                  ],
+                  model: models.Responsible,
+                  as: "Responsible",
                 },
                 {
                   model: models.Employee,
@@ -96,22 +82,8 @@ export const checkToken = async ({
           const user = await models.User.findByPk(userId, {
             include: [
               {
-                model: models.Provider,
-                as: "Provider",
-                include: [
-                  {
-                    model: models.ProviderResponsible,
-                    as: "ProviderResponsible",
-                  },
-                  {
-                    model: models.ProviderPersonal,
-                    as: "ProviderPersonal",
-                  },
-                  {
-                    model: models.CategoryCompany,
-                    as: "CategoryCompany",
-                  },
-                ],
+                model: models.Responsible,
+                as: "Responsible",
               },
               {
                 model: models.Employee,
@@ -197,6 +169,37 @@ export const doLoginEmployee = async (
       as: "Employee",
     },
   });
+  if (!user) {
+    throw new Error("wrong_username_password");
+  }
+
+  const passwordMatch = isPasswordMatch(encrypt(password), user.password);
+  const isActive = user.status === "Active";
+
+  if (!passwordMatch || !isActive) {
+    throw new Error("wrong_username_password");
+  }
+  let token = "";
+  if (systemConnect === "App") {
+    token = createTokenApp({ id: user.id });
+  } else {
+    token = createTokenWeb({ id: user.id });
+  }
+  return { user, token };
+};
+
+export const doLoginResponsible = async (
+  { email, password, systemConnect },
+  models
+) => {
+  const user = await models.User.findOne({
+    where: { email, typeUser: "Responsible" },
+    include: {
+      model: models.Responsible,
+      as: "Responsible",
+    },
+  });
+  console.log(user);
   if (!user) {
     throw new Error("wrong_username_password");
   }

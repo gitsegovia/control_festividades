@@ -11,6 +11,13 @@ export default (sequelize) => {
         },
         as: "TouristicPlace",
       });
+      Responsible.hasOne(models.User, {
+        foreignKey: {
+          name: "responsibleId",
+          field: "responsibleId",
+        },
+        as: "User",
+      });
     }
   }
 

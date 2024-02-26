@@ -13,6 +13,15 @@ const createModel = (sequelize) => {
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
       });
+      User.belongsTo(models.Responsible, {
+        foreignKey: {
+          name: "responsibleId",
+          field: "responsibleId",
+        },
+        as: "Responsible",
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+      });
     }
   }
   User.init(
