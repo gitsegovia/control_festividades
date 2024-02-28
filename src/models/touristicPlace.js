@@ -11,14 +11,9 @@ export default (sequelize) => {
         },
         as: "Parish",
       });
-      TouristicPlace.hasOne(models.Responsible, {
-        foreignKey: {
-          name: "touristicPlaceId",
-          field: "touristicPlaceId",
-        },
-        as: "Responsible",
+      TouristicPlace.belongsToMany(models.Responsible, {
+        through: models.ResponsibleTouristic,
       });
-
     }
   }
 

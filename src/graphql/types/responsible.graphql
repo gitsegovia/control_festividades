@@ -1,0 +1,52 @@
+type Responsible {
+  id: UUID!
+  dni: String!
+  name: String!
+  phone: String!
+  TouristicPlaces: [TouristicPlace!]
+  User: User!
+}
+
+type ResponsibleResult {
+  infoPage: InfoPage
+  results: [Responsible!]
+}
+
+type Query {
+  responsibleListAll(search: SearchResponsibleInput): ResponsibleResult!
+}
+
+type Mutation {
+  createResponsible(input: CreateResponsibleInput!): Responsible!
+  addTouristicPlaceToResponsible(
+    input: AddTouristicPlaceToResponsibleInput
+  ): Boolean!
+  setTouristicPlaceToResponsible(
+    input: AddTouristicPlaceToResponsibleInput
+  ): Boolean!
+  removeTouristicPlaceToResponsible(
+    input: RemoveTouristicPlaceToResponsibleInput
+  ): Boolean!
+}
+
+input SearchResponsibleInput {
+  options: OptionsSearch
+}
+
+input CreateResponsibleInput {
+  touristicPlaceId: [UUID!]
+  dni: String!
+  name: String!
+  phone: String!
+  email: String!
+  password: String!
+}
+
+input AddTouristicPlaceToResponsibleInput {
+  responsibleId: UUID!
+  touristicPlaceId: [UUID!]!
+}
+input RemoveTouristicPlaceToResponsibleInput {
+  responsibleId: UUID!
+  touristicPlaceId: [UUID!]!
+}

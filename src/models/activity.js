@@ -1,4 +1,4 @@
-import { Model, UUID, UUIDV4, STRING } from "sequelize";
+import { Model, UUID, UUIDV4, STRING, BOOLEAN } from "sequelize";
 
 export default (sequelize) => {
   class Activity extends Model {
@@ -31,6 +31,11 @@ export default (sequelize) => {
       name: {
         allowNull: false,
         type: STRING,
+      },
+      active: {
+        allowNull: false,
+        type: BOOLEAN,
+        defaultValue: true,
       },
     },
     {

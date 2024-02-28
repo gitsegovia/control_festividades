@@ -4,12 +4,8 @@ export default (sequelize) => {
   class Responsible extends Model {
     static associate(models) {
       // Rest of the associations...
-      Responsible.belongsTo(models.TouristicPlace, {
-        foreignKey: {
-          name: "touristicPlaceId",
-          field: "touristicPlaceId",
-        },
-        as: "TouristicPlace",
+      Responsible.belongsToMany(models.TouristicPlace, {
+        through: models.ResponsibleTouristic,
       });
       Responsible.hasOne(models.User, {
         foreignKey: {
@@ -28,6 +24,11 @@ export default (sequelize) => {
         allowNull: false,
         type: UUID,
         defaultValue: UUIDV4,
+      },
+      dni: {
+        allowNull: false,
+        type: STRING,
+        defaultValue: "0000000",
       },
       name: {
         allowNull: false,

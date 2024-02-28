@@ -1,4 +1,4 @@
-import { Model, STRING, UUID, UUIDV4 } from "sequelize";
+import { Model, STRING, UUID, UUIDV4, BOOLEAN } from "sequelize";
 
 export default (sequelize) => {
   class Schedule extends Model {
@@ -24,6 +24,11 @@ export default (sequelize) => {
       hour: {
         allowNull: false,
         type: STRING,
+      },
+      active: {
+        allowNull: false,
+        type: BOOLEAN,
+        defaultValue: true,
       },
     },
     {

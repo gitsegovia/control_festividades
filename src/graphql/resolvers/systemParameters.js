@@ -156,7 +156,7 @@ export default {
         include: [
           {
             model: models.Responsible,
-            as: "Responsible",
+            as: "Responsibles",
           },
         ],
       };
@@ -198,51 +198,6 @@ export default {
       return {
         infoPage,
         results: touristicPlace,
-      };
-    },
-    responsibleListAll: async (_, { search }, { models }) => {
-      const options = search?.options ?? null;
-      //PRIORITARIO arreglar consulta para que busque las options y filter y segun eso haga las busquedas
-      const optionsFind = {
-        include: [
-          {
-            model: models.TouristicPlace,
-            as: "TouristicPlace",
-          },
-        ],
-      };
-
-      if (options !== null) {
-        if (options.limit > 0) {
-          optionsFind.limit = options.limit;
-        }
-        if (options.offset > 0) {
-          optionsFind.offset = options.offset;
-        }
-        if (options.orderBy) {
-          optionsFind.order = options.orderBy.map((field, index) => {
-            return [
-              field,
-              options.direction ? options.direction[index] ?? "ASC" : "ASC",
-            ];
-          });
-          optionsFind.include.order = optionsFind.order;
-        }
-      }
-
-      const responsible = await models.Responsible.findAll(optionsFind);
-
-      const infoPage = {
-        count: responsible.length,
-        pages: 1,
-        current: 1,
-        next: false,
-        prev: false,
-      };
-
-      return {
-        infoPage,
-        results: responsible,
       };
     },
     scheduleListAll: async (_, { search }, { models }) => {
@@ -487,34 +442,6 @@ export default {
           );
 
           return touristicPlace;
-        });
-
-        return result;
-      } catch (error) {
-        // PRIORITARIO Create error manager to handle internal messages or retries or others
-        console.log(error);
-        throw new Error("error");
-      }
-    },
-    createResponsible: async (_, { input }, { models }) => {
-      try {
-        const { touristicPlaceId, name, phone } = input;
-
-        const result = await models.sequelizeInst.transaction(async (t) => {
-          const inpResponsible = {
-            touristicPlaceId,
-            name,
-            phone,
-          };
-
-          const responsible = await models.Responsible.create(
-            {
-              ...inpResponsible,
-            },
-            { transaction: t }
-          );
-
-          return responsible;
         });
 
         return result;

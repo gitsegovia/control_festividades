@@ -1,0 +1,195 @@
+export default {
+  Query: {
+    responsibleListAll: async (_, { search }, { models }) => {
+      const options = search?.options ?? null;
+      //PRIORITARIO arreglar consulta para que busque las options y filter y segun eso haga las busquedas
+      const optionsFind = {
+        include: { all: true, nested: true },
+      };
+      /*{
+        include: [
+          {
+            model: models.User,
+            as: "User",
+          },
+          "TouristicPlaces",
+        ],
+      };*/
+
+      if (options !== null) {
+        if (options.limit > 0) {
+          optionsFind.limit = options.limit;
+        }
+        if (options.offset > 0) {
+          optionsFind.offset = options.offset;
+        }
+        if (options.orderBy) {
+          optionsFind.order = options.orderBy.map((field, index) => {
+            return [
+              field,
+              options.direction ? options.direction[index] ?? "ASC" : "ASC",
+            ];
+          });
+          optionsFind.include.order = optionsFind.order;
+        }
+      }
+
+      const responsible = await models.Responsible.findAll(optionsFind);
+
+      const infoPage = {
+        count: responsible.length,
+        pages: 1,
+        current: 1,
+        next: false,
+        prev: false,
+      };
+
+      return {
+        infoPage,
+        results: responsible,
+      };
+    },
+  },
+  Mutation: {
+    createResponsible: async (_, { input }, { models }) => {
+      const { touristicPlaceId, dni, name, phone, email, password } = input;
+
+      const countUser = await models.User.count({
+        where: {
+          email,
+          typeUser: "Responsible",
+        },
+      });
+      if (countUser > 0) {
+        throw new AuthenticationError("User already exists");
+      }
+      const countResp = await models.Responsible.count({
+        where: {
+          dni,
+        },
+      });
+      if (countResp > 0) {
+        throw new AuthenticationError("Responsible already exists");
+      }
+
+      try {
+        const result = await models.sequelizeInst.transaction(async (t) => {
+          const inpUser = {
+            email,
+            phone: "000000",
+            password,
+            typeUser: "Responsible",
+            nameUser: email,
+          };
+
+          const inpResponsible = {
+            dni,
+            name,
+            phone,
+            User: inpUser,
+          };
+
+          const userResp = await models.Responsible.create(
+            {
+              ...inpResponsible,
+            },
+            {
+              include: {
+                model: models.User,
+                as: "User",
+              },
+              transaction: t,
+            }
+          );
+
+          if (touristicPlaceId && touristicPlaceId.length > 0) {
+            userResp.setTouristicPlaces(touristicPlaceId);
+          }
+
+          return userResp;
+        });
+
+        return result;
+      } catch (error) {
+        // PRIORITARIO Create error manager to handle internal messages or retries or others
+        console.log(error);
+        throw new Error("error");
+      }
+    },
+    addTouristicPlaceToResponsible: async (_, { input }, { models }) => {
+      const { responsibleId, touristicPlaceId } = input;
+
+      const findResponsible = await models.Responsible.findByPk(responsibleId);
+
+      if (!findResponsible) {
+        throw new Error("Responsible not found");
+      }
+      try {
+        const result = await models.sequelizeInst.transaction(async (t) => {
+          await findResponsible.addTouristicPlaces(touristicPlaceId, {
+            transaction: t,
+          });
+
+          return true;
+        });
+
+        return result;
+      } catch (error) {
+        // PRIORITARIO Create error manager to handle internal messages or retries or others
+        console.log(error);
+        throw new Error("error");
+      }
+    },
+    setTouristicPlaceToResponsible: async (_, { input }, { models }) => {
+      const { responsibleId, touristicPlaceId } = input;
+
+      const findResponsible = await models.Responsible.findByPk(responsibleId);
+
+      if (!findResponsible) {
+        throw new Error("Responsible not found");
+      }
+      if (touristicPlaceId && touristicPlaceId.length !== 1) {
+        throw new Error("Responsible cannot have more than one tourist ");
+      }
+      try {
+        const result = await models.sequelizeInst.transaction(async (t) => {
+          await findResponsible.setTouristicPlaces(touristicPlaceId, {
+            transaction: t,
+          });
+
+          return true;
+        });
+
+        return result;
+      } catch (error) {
+        // PRIORITARIO Create error manager to handle internal messages or retries or others
+        console.log(error);
+        throw new Error("error");
+      }
+    },
+    removeTouristicPlaceToResponsible: async (_, { input }, { models }) => {
+      const { responsibleId, touristicPlaceId } = input;
+
+      const findResponsible = await models.Responsible.findByPk(responsibleId);
+
+      if (!findResponsible) {
+        throw new Error("Responsible not found");
+      }
+      try {
+        const result = await models.sequelizeInst.transaction(async (t) => {
+          await findResponsible.removeTouristicPlaces(touristicPlaceId, {
+            transaction: t,
+          });
+
+          return true;
+        });
+
+        return result;
+      } catch (error) {
+        // PRIORITARIO Create error manager to handle internal messages or retries or others
+        console.log(error);
+        throw new Error("error");
+      }
+    },
+  },
+};

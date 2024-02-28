@@ -38,24 +38,12 @@ type ParishResult {
 type TouristicPlace {
   id: UUID!
   name: String!
-  Responsible: Responsible
+  Responsibles: [Responsible!]
 }
 
 type TouristicPlaceResult {
   infoPage: InfoPage
   results: [TouristicPlace!]
-}
-
-type Responsible {
-  id: UUID!
-  name: String!
-  phone: String!
-  TouristicPlace: TouristicPlace!
-}
-
-type ResponsibleResult {
-  infoPage: InfoPage
-  results: [Responsible!]
 }
 
 type Schedule {
@@ -72,6 +60,7 @@ type ScheduleResult {
 type Category {
   id: UUID!
   name: String!
+  active: Boolean!
   Activity: [Activity!]
 }
 
@@ -83,6 +72,7 @@ type CategoryResult {
 type Activity {
   id: UUID!
   name: String!
+  active: Boolean!
   Summary: [Summary!]
 }
 
@@ -98,7 +88,6 @@ type Query {
   touristicPlaceListAll(
     search: SearchTouristicPlaceInput
   ): TouristicPlaceResult!
-  responsibleListAll(search: SearchResponsibleInput): ResponsibleResult!
   scheduleListAll(search: SearchScheduleInput): ScheduleResult!
   categoryListAll(search: SearchCategoryInput): CategoryResult!
   activityListAll(search: SearchActivityInput): ActivityResult!
@@ -109,7 +98,6 @@ type Mutation {
   createMunicipality(input: CreateMunicipalityInput!): Municipality!
   createParish(input: CreateParishInput!): Parish!
   createTouristicPlace(input: CreateTouristicPlaceInput!): TouristicPlace!
-  createResponsible(input: CreateResponsibleInput!): Responsible!
   createSchedule(input: CreateScheduleInput!): Schedule!
   createCategory(input: CreateCategoryInput!): Category!
   createActivity(input: CreateActivityInput!): Activity!
@@ -155,16 +143,6 @@ input SearchTouristicPlaceInput {
 input CreateTouristicPlaceInput {
   parishId: UUID!
   name: String!
-}
-
-input SearchResponsibleInput {
-  options: OptionsSearch
-}
-
-input CreateResponsibleInput {
-  touristicPlaceId: UUID!
-  name: String!
-  phone: String!
 }
 
 input SearchScheduleInput {
