@@ -53,6 +53,10 @@ export const checkToken = async ({
                 {
                   model: models.Responsible,
                   as: "Responsible",
+                  include: {
+                    model: models.TouristicPlace,
+                    as: "TouristicPlaces"
+                  }
                 },
                 {
                   model: models.Employee,
@@ -84,6 +88,10 @@ export const checkToken = async ({
               {
                 model: models.Responsible,
                 as: "Responsible",
+                include: {
+                  model: models.TouristicPlace,
+                  as: "TouristicPlaces"
+                }
               },
               {
                 model: models.Employee,
@@ -197,6 +205,10 @@ export const doLoginResponsible = async (
     include: {
       model: models.Responsible,
       as: "Responsible",
+      include: {
+        model: models.TouristicPlace,
+        as: "TouristicPlaces"
+      }
     },
   });
   console.log(user);
