@@ -1,0 +1,24 @@
+type SummaryToll {
+  id: UUID!
+  attended: Boolean
+  Toll: Toll!
+  Event: Event!
+  Schedule: Schedule!
+  TouristicPlace: TouristicPlace!
+}
+
+type SummaryTollResult {
+  infoPage: InfoPage
+  results: [SummaryToll!]
+}
+
+type Query {
+  summaryTollListAllByEvent(
+    search: SearchSummaryTollByEventInput
+  ): SummaryTollResult!
+}
+
+input SearchSummaryTollByEventInput {
+  options: OptionsSearch
+  eventId: UUID!
+}

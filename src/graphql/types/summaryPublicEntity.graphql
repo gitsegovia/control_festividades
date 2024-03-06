@@ -1,0 +1,24 @@
+type SummaryPublicEntity {
+  id: UUID!
+  attended: Boolean
+  PublicEntity: PublicEntity!
+  Event: Event!
+  Schedule: Schedule!
+  TouristicPlace: TouristicPlace!
+}
+
+type SummaryPublicEntityResult {
+  infoPage: InfoPage
+  results: [SummaryPublicEntity!]
+}
+
+type Query {
+  summaryPublicEntityListAllByEvent(
+    search: SearchSummaryPublicEntityByEventInput
+  ): SummaryPublicEntityResult!
+}
+
+input SearchSummaryPublicEntityByEventInput {
+  options: OptionsSearch
+  eventId: UUID!
+}

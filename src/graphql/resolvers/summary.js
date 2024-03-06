@@ -77,10 +77,23 @@ export default {
   Mutation: {
     createSummary: async (_, { input }, { models }) => {
       try {
-        const { eventId, scheduleId, touristicPlaceId, listSummary } = input;
+        const {
+          eventId,
+          scheduleId,
+          touristicPlaceId,
+          listSummary,
+          listSummaryPublicEntity,
+          listSummaryToll,
+        } = input;
 
         if (!listSummary && listSummary.length === 0) {
           throw new Error("quantity invalid");
+        }
+        if (!listSummaryPublicEntity && listSummaryPublicEntity.length === 0) {
+          throw new Error("Entity invalid");
+        }
+        if (!listSummaryToll && listSummaryToll.length === 0) {
+          throw new Error("Toll invalid");
         }
 
         const result = await models.sequelizeInst.transaction(async (t) => {
@@ -95,6 +108,38 @@ export default {
           });
 
           const activity = await models.Summary.bulkCreate(inpSummary, {
+            transaction: t,
+          });
+
+          const inpSummaryPublicEntity = listSummaryPublicEntity.map((v) => {
+            return {
+              eventId,
+              scheduleId,
+              touristicPlaceId,
+              attended: v.attended,
+              publicEntityId: v.publicEntityId,
+            };
+          });
+
+          const entity = await models.SummaryPublicEntity.bulkCreate(
+            inpSummaryPublicEntity,
+            {
+              transaction: t,
+            }
+          );
+
+          const inpSummaryToll = listSummaryToll.map((v) => {
+            return {
+              eventId,
+              scheduleId,
+              touristicPlaceId,
+              incoming: v.incoming,
+              outgoing: v.outgoing,
+              tollId: v.tollId,
+            };
+          });
+
+          const toll = await models.SummaryToll.bulkCreate(inpSummaryToll, {
             transaction: t,
           });
 

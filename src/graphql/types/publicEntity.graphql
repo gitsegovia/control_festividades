@@ -1,0 +1,32 @@
+type PublicEntity {
+  id: UUID!
+  name: String!
+  active: Boolean!
+  SummaryPublicEntity: [SummaryPublicEntity!]
+}
+
+type PublicEntityResult {
+  infoPage: InfoPage
+  results: [PublicEntity!]
+}
+
+type Query {
+  publicEntityListAll(search: SearchPublicEntityInput): PublicEntityResult!
+}
+
+type Mutation {
+  createPublicEntity(input: CreatePublicEntityInput!): PublicEntity!
+  activatePublicEntity(publicEntityId: UUID!): PublicEntity!
+  deactivatePublicEntity(publicEntityId: UUID!): PublicEntity!
+}
+
+input SearchPublicEntityInput {
+  options: OptionsSearch
+}
+
+input CreatePublicEntityInput {
+  id: UUID
+  name: String!
+  year: Int!
+  active: Boolean!
+}

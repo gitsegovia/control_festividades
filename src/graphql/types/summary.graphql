@@ -30,9 +30,22 @@ input CreateSummaryInput {
   scheduleId: UUID!
   touristicPlaceId: UUID!
   listSummary: [ListSummaryInput!]!
+  listSummaryPublicEntity: [ListSummaryPublicEntityInput!]!
+  listSummaryToll: [ListSummaryTollInput!]!
 }
 
 input ListSummaryInput {
   quantity: Int!
   activityId: UUID!
+}
+
+input ListSummaryPublicEntityInput {
+  attended: Boolean!
+  publicEntityId: UUID!
+}
+
+input ListSummaryTollInput {
+  incoming: Int!
+  outgoing: Int!
+  tollId: UUID!
 }

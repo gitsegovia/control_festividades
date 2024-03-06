@@ -1,0 +1,32 @@
+type Toll {
+  id: UUID!
+  name: String!
+  active: Boolean!
+  SummaryToll: [SummaryToll!]
+}
+
+type TollResult {
+  infoPage: InfoPage
+  results: [Toll!]
+}
+
+type Query {
+  tollListAll(search: SearchTollInput): TollResult!
+}
+
+type Mutation {
+  createToll(input: CreateTollInput!): Toll!
+  activateToll(tollId: UUID!): Toll!
+  deactivateToll(tollId: UUID!): Toll!
+}
+
+input SearchTollInput {
+  options: OptionsSearch
+}
+
+input CreateTollInput {
+  id: UUID
+  name: String!
+  year: Int!
+  active: Boolean!
+}
