@@ -49,15 +49,15 @@ export default {
   Mutation: {
     createPublicEntity: async (_, { input }, { models }) => {
       try {
-        const { id, name, year, active } = input;
+        const { id=null, name, year, active } = input;
         
-        let findPublicEntity = undefined;
+        let findPublicEntity = null;
         
-        if(id){
+        if(id!==null){
           findPublicEntity = await models.PublicEntity.findByPk(id);
         }
-
-        if (findPublicEntity) {
+        
+        if (findPublicEntity!==null) {
           const result = await models.sequelizeInst.transaction(async (t) => {
             const inpPublicEntity = {
               name,
