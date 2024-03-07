@@ -70,6 +70,7 @@ export default {
               await models.PublicEntity.update(
                 { active: false },
                 {
+                  where: { active: true },
                   transaction: t,
                 }
               );
@@ -102,7 +103,8 @@ export default {
             if (active === true) {
               await models.PublicEntity.update(
                 { active: false },
-                {
+                {                  
+                  where: { active: true },
                   transaction: t,
                 }
               );
