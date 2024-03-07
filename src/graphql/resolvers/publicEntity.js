@@ -49,16 +49,15 @@ export default {
   Mutation: {
     createPublicEntity: async (_, { input }, { models }) => {
       try {
-        const { id=null, name, year, active } = input;
-        
+        const { id = null, name, year, active } = input;
+
         let findPublicEntity = null;
-        
-        if(id!==null){
+
+        if (id !== null) {
           findPublicEntity = await models.PublicEntity.findByPk(id);
         }
-        console.log(findPublicEntity)
-        if (findPublicEntity!==null) {
-          console.log("PASO")
+
+        if (findPublicEntity !== null) {
           const result = await models.sequelizeInst.transaction(async (t) => {
             const inpPublicEntity = {
               name,
@@ -93,7 +92,7 @@ export default {
             if (active === true) {
               await models.PublicEntity.update(
                 { active: false },
-                {                  
+                {
                   where: { active: true },
                   transaction: t,
                 }
@@ -129,11 +128,10 @@ export default {
         }
 
         const result = await models.sequelizeInst.transaction(async (t) => {
-          
           publicEntityExist.active = true;
-          publicEntityExist.save({
-              transaction: t,
-            });
+          await publicEntityExist.save({
+            transaction: t,
+          });
 
           return publicEntityExist;
         });
@@ -155,7 +153,9 @@ export default {
 
         const result = await models.sequelizeInst.transaction(async (t) => {
           publicEntityExist.active = false;
-          await publicEntityExist.save();
+          await publicEntityExist.save({
+            transaction: t,
+          });
 
           return publicEntityExist;
         });

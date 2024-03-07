@@ -168,7 +168,7 @@ export default {
       }
 
       user.status = "Inactive";
-      user.save();
+      await user.save();
 
       return true;
     },
