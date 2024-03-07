@@ -129,18 +129,11 @@ export default {
         }
 
         const result = await models.sequelizeInst.transaction(async (t) => {
-          await models.PublicEntity.update(
-            { active: false },
-            {
-              where: {
-                active: true,
-              },
-              transaction: t,
-            }
-          );
-
+          
           publicEntityExist.active = true;
-          publicEntityExist.save();
+          publicEntityExist.save({
+              transaction: t,
+            });
 
           return publicEntityExist;
         });
