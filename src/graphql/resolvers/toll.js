@@ -60,15 +60,7 @@ export default {
               active,
             };
 
-            if (active === true) {
-              await models.Toll.update(
-                { active: false },
-                {
-                  transaction: t,
-                }
-              );
-            }
-
+            
             const toll = await models.Toll.update(
               {
                 ...inpToll,
