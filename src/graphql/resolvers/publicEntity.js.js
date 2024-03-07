@@ -66,16 +66,6 @@ export default {
               active,
             };
 
-            if (active === true) {
-              await models.PublicEntity.update(
-                { active: false },
-                {
-                  where: { active: true },
-                  transaction: t,
-                }
-              );
-            }
-
             const publicEntity = await models.PublicEntity.update(
               {
                 ...inpPublicEntity,
