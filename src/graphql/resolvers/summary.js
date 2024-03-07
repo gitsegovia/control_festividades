@@ -86,62 +86,59 @@ export default {
           listSummaryToll,
         } = input;
 
-        if (!listSummary && listSummary.length === 0) {
-          throw new Error("quantity invalid");
-        }
-        if (!listSummaryPublicEntity && listSummaryPublicEntity.length === 0) {
-          throw new Error("Entity invalid");
-        }
-        if (!listSummaryToll && listSummaryToll.length === 0) {
-          throw new Error("Toll invalid");
-        }
-
         const result = await models.sequelizeInst.transaction(async (t) => {
-          const inpSummary = listSummary.map((v) => {
-            return {
-              eventId,
-              scheduleId,
-              touristicPlaceId,
-              quantity: v.quantity,
-              activityId: v.activityId,
-            };
-          });
-
-          const activity = await models.Summary.bulkCreate(inpSummary, {
-            transaction: t,
-          });
-
-          const inpSummaryPublicEntity = listSummaryPublicEntity.map((v) => {
-            return {
-              eventId,
-              scheduleId,
-              touristicPlaceId,
-              attended: v.attended,
-              publicEntityId: v.publicEntityId,
-            };
-          });
-
-          const entity = await models.SummaryPublicEntity.bulkCreate(
-            inpSummaryPublicEntity,
-            {
+          
+          if (listSummary && listSummary.length > 0) {
+            const inpSummary = listSummary.map((v) => {
+              return {
+                eventId,
+                scheduleId,
+                touristicPlaceId,
+                quantity: v.quantity,
+                activityId: v.activityId,
+              };
+            });
+  
+            const activity = await models.Summary.bulkCreate(inpSummary, {
               transaction: t,
-            }
-          );
+            });
+          }
 
-          const inpSummaryToll = listSummaryToll.map((v) => {
-            return {
-              eventId,
-              scheduleId,
-              touristicPlaceId,
-              incoming: v.incoming,
-              outgoing: v.outgoing,
-              tollId: v.tollId,
-            };
-          });
-
-          const toll = await models.SummaryToll.bulkCreate(inpSummaryToll, {
-            transaction: t,
-          });
+          if (listSummaryPublicEntity && listSummaryPublicEntity.length> 0) {
+            const inpSummaryPublicEntity = listSummaryPublicEntity.map((v) => {
+              return {
+                eventId,
+                scheduleId,
+                touristicPlaceId,
+                attended: v.attended,
+                publicEntityId: v.publicEntityId,
+              };
+            });
+  
+            const entity = await models.SummaryPublicEntity.bulkCreate(
+              inpSummaryPublicEntity,
+              {
+                transaction: t,
+              }
+            );
+          }
+          
+          if (listSummaryToll && listSummaryToll.length > 0) {
+            const inpSummaryToll = listSummaryToll.map((v) => {
+              return {
+                eventId,
+                scheduleId,
+                touristicPlaceId,
+                incoming: v.incoming,
+                outgoing: v.outgoing,
+                tollId: v.tollId,
+              };
+            });
+  
+            const toll = await models.SummaryToll.bulkCreate(inpSummaryToll, {
+              transaction: t,
+            });
+          }
 
           return true;
         });
