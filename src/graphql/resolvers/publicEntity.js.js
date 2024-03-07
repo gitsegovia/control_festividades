@@ -50,7 +50,12 @@ export default {
     createPublicEntity: async (_, { input }, { models }) => {
       try {
         const { id, name, year, active } = input;
-        const findPublicEntity = await models.PublicEntity.findByPk(id);
+        
+        let findPublicEntity = undefined;
+        
+        if(id){
+          findPublicEntity = await models.PublicEntity.findByPk(id);
+        }
 
         if (findPublicEntity) {
           const result = await models.sequelizeInst.transaction(async (t) => {
