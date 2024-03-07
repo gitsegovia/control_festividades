@@ -121,18 +121,11 @@ export default {
         }
 
         const result = await models.sequelizeInst.transaction(async (t) => {
-          await models.Toll.update(
-            { active: false },
-            {
-              where: {
-                active: true,
-              },
-              transaction: t,
-            }
-          );
-
+          
           tollExist.active = true;
-          tollExist.save();
+          tollExist.save({
+              transaction: t,
+            });
 
           return tollExist;
         });
