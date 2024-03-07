@@ -56,8 +56,9 @@ export default {
         if(id!==null){
           findPublicEntity = await models.PublicEntity.findByPk(id);
         }
-        
+        console.log(findPublicEntity)
         if (findPublicEntity!==null) {
+          console.log("PASO")
           const result = await models.sequelizeInst.transaction(async (t) => {
             const inpPublicEntity = {
               name,
