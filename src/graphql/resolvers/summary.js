@@ -130,7 +130,7 @@ export default {
                 scheduleId,
                 touristicPlaceId,
                 incoming: v.incoming,
-                outgoing: v.outgoing,
+                outgoing: 0,
                 tollId: v.tollId,
               };
             });
