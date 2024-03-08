@@ -46,6 +46,6 @@ input ListSummaryPublicEntityInput {
 
 input ListSummaryTollInput {
   incoming: Int!
-  outgoing: Int!
+  outgoing: Int
   tollId: UUID!
 }
