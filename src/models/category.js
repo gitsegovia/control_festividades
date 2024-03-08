@@ -30,6 +30,11 @@ export default (sequelize) => {
         type: BOOLEAN,
         defaultValue: true,
       },
+      code: {
+        allowNull: false,
+        type: STRING,
+        defaultValue: "CD-0000"
+      }
     },
     {
       sequelize,
