@@ -1,4 +1,4 @@
-import { Model, UUID, UUIDV4, STRING, BOOLEAN } from "sequelize";
+import { Model, UUID, UUIDV4, STRING, INTEGER, BOOLEAN } from "sequelize";
 
 export default (sequelize) => {
   class Category extends Model {
@@ -30,13 +30,34 @@ export default (sequelize) => {
         type: BOOLEAN,
         defaultValue: true,
       },
+      numberCat: {
+        allowNull: false,
+        type: INTEGER,
+        defaultValue: 0
+      },
       code: {
         allowNull: false,
         type: STRING,
-        defaultValue: "CD-0000"
+        defaultValue: "CT-0000"
       }
     },
     {
+       hooks: {
+        beforeCreate: async (category) => {
+          let valor = await Category.findAll({
+            attributes: [
+              [sequelize.fn("max", sequelize.col("numberCat")), "maxNumber"],
+            ],
+            raw: true,
+          });
+          let number = 1;
+          if (valor && valor[0].maxNumber != null) {
+            number += valor[0].maxNumber;
+          }
+          category.numberCat = number;
+          user.code = `CT-${number}`;
+        },
+      },
       sequelize,
       modelName: "Category",
     }
