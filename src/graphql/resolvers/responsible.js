@@ -206,7 +206,7 @@ export default {
             transaction: t,
           });
 
-          return true;
+          return findResponsible;
         });
 
         return result;
