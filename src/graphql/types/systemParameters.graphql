@@ -61,6 +61,8 @@ type Category {
   id: UUID!
   name: String!
   active: Boolean!
+  numberCat: Int!
+  code: String!
   Activity: [Activity!]
 }
 
