@@ -38,6 +38,11 @@ export default (sequelize) => {
         allowNull: false,
         type: STRING,
       },
+      permission: {
+        allowNull: false,
+        type: STRING,
+        defaultValue: ""
+      }
     },
     {
       sequelize,
