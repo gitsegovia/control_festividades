@@ -3,6 +3,7 @@ type Responsible {
   dni: String!
   name: String!
   phone: String!
+  permission: String!
   TouristicPlaces: [TouristicPlace!]
   User: User!
 }
