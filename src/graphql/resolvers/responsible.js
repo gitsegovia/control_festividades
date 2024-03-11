@@ -191,5 +191,30 @@ export default {
         throw new Error("error");
       }
     },
+    setPermissionResponsible: async (_, { input }, { models }) => {
+      const { responsibleId, permission } = input;
+
+      const findResponsible = await models.Responsible.findByPk(responsibleId);
+
+      if (!findResponsible) {
+        throw new Error("Responsible not found");
+      }
+      try {
+        const result = await models.sequelizeInst.transaction(async (t) => {
+          findResponsible.permission = permission
+          await  findResponsible.save({
+            transaction: t,
+          });
+
+          return true;
+        });
+
+        return result;
+      } catch (error) {
+        // PRIORITARIO Create error manager to handle internal messages or retries or others
+        console.log(error);
+        throw new Error("error");
+      }
+    },
   },
 };
