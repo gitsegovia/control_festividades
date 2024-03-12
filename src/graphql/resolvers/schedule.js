@@ -65,17 +65,18 @@ export default {
                 throw new Error("Event no active");
             }
 
-            const now = moment().format("YYYY-MM-DD")
+            const nowEndOf = moment().endOf("day")
+            const nowStartOf = moment().startOf("day")
 
             const whereCheck = {
                 eventId: event.id,
                 touristicPlaceId: touristicPlaceId,
                 createdAt: {
-                    [Op.lte]: `${now} 00:00:00`
+                    [Op.gte]: nowStartOf
                 },
                 createdAt: {
-                    [Op.gte]: `${now} 24:59:59`
-                }
+                    [Op.lte]: nowEndOf
+                },
             }
 
             const summary = await models.Summary.findAll({
