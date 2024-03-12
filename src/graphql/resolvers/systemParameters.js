@@ -273,17 +273,16 @@ export default {
           createdAt: now
         }
       })
-      console.log(summary);
-      throw new Error("Event no active");
+
       const scheduleReport = []
 
-      summary.foreach(v => {
+      summary.forEach(v => {
         scheduleReport.push(v.scheduleId)
       })
 
       const schedule = []
 
-      scheduleAll.foreach(s => {
+      scheduleAll.forEach(s => {
         if (!scheduleReport.include(s.id)) {
           schedule.push(s)
         }
