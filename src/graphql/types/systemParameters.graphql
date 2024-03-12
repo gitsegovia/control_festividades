@@ -46,17 +46,6 @@ type TouristicPlaceResult {
   results: [TouristicPlace!]
 }
 
-type Schedule {
-  id: UUID!
-  hour: String!
-  Summary: [Summary!]
-}
-
-type ScheduleResult {
-  infoPage: InfoPage
-  results: [Schedule!]
-}
-
 type Category {
   id: UUID!
   name: String!
@@ -90,8 +79,6 @@ type Query {
   touristicPlaceListAll(
     search: SearchTouristicPlaceInput
   ): TouristicPlaceResult!
-  scheduleListAll(search: SearchScheduleInput): ScheduleResult!
-  scheduleAvailablePerTouristicPlace(search: SearchSchedulePerTouristicPlaceInput): ScheduleResult!
   categoryListAll(search: SearchCategoryInput): CategoryResult!
   activityListAll(search: SearchActivityInput): ActivityResult!
 }
@@ -101,7 +88,6 @@ type Mutation {
   createMunicipality(input: CreateMunicipalityInput!): Municipality!
   createParish(input: CreateParishInput!): Parish!
   createTouristicPlace(input: CreateTouristicPlaceInput!): TouristicPlace!
-  createSchedule(input: CreateScheduleInput!): Schedule!
   createCategory(input: CreateCategoryInput!): Category!
   createActivity(input: CreateActivityInput!): Activity!
 }
@@ -148,17 +134,6 @@ input CreateTouristicPlaceInput {
   name: String!
 }
 
-input SearchSchedulePerTouristicPlaceInput {
-  touristicPlaceId: UUID!
-}
-
-input SearchScheduleInput {
-  options: OptionsSearch
-}
-
-input CreateScheduleInput {
-  hour: String!
-}
 
 input SearchCategoryInput {
   options: OptionsSearch

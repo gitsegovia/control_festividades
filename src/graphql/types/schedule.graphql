@@ -1,0 +1,31 @@
+type Schedule {
+  id: UUID!
+  hour: String!
+  Summary: [Summary!]
+}
+
+type ScheduleResult {
+  infoPage: InfoPage
+  results: [Schedule!]
+}
+
+type Query {
+  scheduleListAll(search: SearchScheduleInput): ScheduleResult!
+  scheduleAvailablePerTouristicPlace(search: SearchSchedulePerTouristicPlaceInput): ScheduleResult!
+}
+
+type Mutation {
+  createSchedule(input: CreateScheduleInput!): Schedule!
+}
+
+input SearchSchedulePerTouristicPlaceInput {
+  touristicPlaceId: UUID!
+}
+
+input SearchScheduleInput {
+  options: OptionsSearch
+}
+
+input CreateScheduleInput {
+  hour: String!
+}
