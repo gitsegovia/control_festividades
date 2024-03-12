@@ -1,3 +1,5 @@
+import moment from "moment"
+
 export default {
   Query: {
     stateListAll: async (_, { search }, { models }) => {
@@ -231,6 +233,60 @@ export default {
       }
 
       const schedule = await models.Schedule.findAll(optionsFind);
+
+      const infoPage = {
+        count: schedule.length,
+        pages: 1,
+        current: 1,
+        next: false,
+        prev: false,
+      };
+
+      return {
+        infoPage,
+        results: schedule,
+      };
+    },
+    scheduleAvailablePerResponsible: async (_, { search }, { models }) => {
+      const {touristicPlaceId} = search
+      
+      const scheduleAll = await models.Schedule.findAll({
+        active: true
+      });
+
+      const event = await models.Event.findOne({
+        where: {
+          active: true
+        }
+      })
+
+      if(!event){
+        throw new Error("Event no active");
+      }
+
+      const now = moment().format("YYYY-MM-DD")
+
+      const summary = await models.Summary.findAll({
+        where: {
+          eventId: event.id,
+          touristicPlaceId: touristicPlaceId,
+          createdAt: now
+        }
+      })
+
+      const scheduleReport = []
+      
+      summary.foreach(v => {
+        scheduleReport.push(v.scheduleId)  
+      })
+
+      const schedule = []
+
+      scheduleAll.foreach(s => {
+        if(!scheduleReport.include(s.id)){
+          schedule.push(s)
+        }
+      })
 
       const infoPage = {
         count: schedule.length,
