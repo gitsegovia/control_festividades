@@ -149,7 +149,7 @@ input CreateTouristicPlaceInput {
 }
 
 input SearchSchedulePerResponsibleInput {
-  responsableId: UUID!
+  touristicPlaceId: UUID!
 }
 
 input SearchScheduleInput {
