@@ -1,4 +1,5 @@
 import moment from "moment";
+import { Op } from "sequelize";
 
 export default {
     Query: {
@@ -69,10 +70,14 @@ export default {
             const whereCheck = {
                 eventId: event.id,
                 touristicPlaceId: touristicPlaceId,
-                createdAt: now
+                createdAt: {
+                    [Op.lte]: `${now} 00:00:00`
+                },
+                createdAt: {
+                    [Op.gte]: `${now} 24:59:59`
+                }
             }
-            console.log(whereCheck)
-            throw new Error("temp");
+
             const summary = await models.Summary.findAll({
                 where: whereCheck
             })
