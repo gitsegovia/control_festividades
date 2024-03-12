@@ -1,4 +1,4 @@
-import moment from "moment"
+import moment from "moment";
 
 export default {
   Query: {
@@ -248,8 +248,8 @@ export default {
       };
     },
     scheduleAvailablePerResponsible: async (_, { search }, { models }) => {
-      const {touristicPlaceId} = search
-      
+      const { touristicPlaceId } = search
+
       const scheduleAll = await models.Schedule.findAll({
         active: true
       });
@@ -260,7 +260,7 @@ export default {
         }
       })
 
-      if(!event){
+      if (!event) {
         throw new Error("Event no active");
       }
 
@@ -273,17 +273,18 @@ export default {
           createdAt: now
         }
       })
-
+      console.log(summary);
+      throw new Error("Event no active");
       const scheduleReport = []
-      
+
       summary.foreach(v => {
-        scheduleReport.push(v.scheduleId)  
+        scheduleReport.push(v.scheduleId)
       })
 
       const schedule = []
 
       scheduleAll.foreach(s => {
-        if(!scheduleReport.include(s.id)){
+        if (!scheduleReport.include(s.id)) {
           schedule.push(s)
         }
       })
