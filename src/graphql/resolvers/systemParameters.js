@@ -247,7 +247,7 @@ export default {
         results: schedule,
       };
     },
-    scheduleAvailablePerResponsible: async (_, { search }, { models }) => {
+    scheduleAvailablePerTouristicPlace: async (_, { search }, { models }) => {
       const { touristicPlaceId } = search
 
       const scheduleAll = await models.Schedule.findAll({
