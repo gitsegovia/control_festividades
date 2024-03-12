@@ -91,6 +91,7 @@ type Query {
     search: SearchTouristicPlaceInput
   ): TouristicPlaceResult!
   scheduleListAll(search: SearchScheduleInput): ScheduleResult!
+  scheduleAvailablePerResponsible(search: SearchSchedulePerResponsibleInput): ScheduleResult!
   categoryListAll(search: SearchCategoryInput): CategoryResult!
   activityListAll(search: SearchActivityInput): ActivityResult!
 }
@@ -145,6 +146,10 @@ input SearchTouristicPlaceInput {
 input CreateTouristicPlaceInput {
   parishId: UUID!
   name: String!
+}
+
+input SearchSchedulePerResponsibleInput {
+  responsableId: UUID!
 }
 
 input SearchScheduleInput {
