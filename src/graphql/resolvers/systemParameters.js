@@ -283,7 +283,7 @@ export default {
       const schedule = []
 
       scheduleAll.forEach(s => {
-        if (!scheduleReport.include(s.id)) {
+        if (!scheduleReport.includes(s.id)) {
           schedule.push(s)
         }
       })
