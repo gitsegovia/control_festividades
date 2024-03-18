@@ -39,7 +39,12 @@ export default (sequelize) => {
         allowNull: false,
         type: STRING,
         defaultValue: "CT-0000"
-      }
+      },
+      pc: {
+        allowNull: false,
+        type: BOOLEAN,
+        defaultValue: false,
+      },
     },
     {
        hooks: {
