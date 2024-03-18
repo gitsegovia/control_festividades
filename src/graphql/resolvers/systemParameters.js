@@ -408,12 +408,16 @@ export default {
     },
     createCategory: async (_, { input }, { models }) => {
       try {
-        const { name } = input;
+        const { name, pc } = input;
 
         const result = await models.sequelizeInst.transaction(async (t) => {
           const inpCategory = {
             name,
           };
+
+          if(pc){
+            inpCategory.pc=pc
+          }
 
           const category = await models.Category.create(
             {
