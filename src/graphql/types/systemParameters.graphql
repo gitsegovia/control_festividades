@@ -35,17 +35,6 @@ type ParishResult {
   results: [Parish!]
 }
 
-type TouristicPlace {
-  id: UUID!
-  name: String!
-  Responsibles: [Responsible!]
-}
-
-type TouristicPlaceResult {
-  infoPage: InfoPage
-  results: [TouristicPlace!]
-}
-
 type Category {
   id: UUID!
   name: String!
@@ -77,9 +66,6 @@ type Query {
   stateListAll(search: SearchStateInput): StateResult!
   municipalityListAll(search: SearchMunicipalityInput): MunicipalityResult!
   parishListAll(search: SearchParishInput): ParishResult!
-  touristicPlaceListAll(
-    search: SearchTouristicPlaceInput
-  ): TouristicPlaceResult!
   categoryListAll(search: SearchCategoryInput): CategoryResult!
   activityListAll(search: SearchActivityInput): ActivityResult!
 }
@@ -88,7 +74,6 @@ type Mutation {
   createState(input: CreateStateInput!): State!
   createMunicipality(input: CreateMunicipalityInput!): Municipality!
   createParish(input: CreateParishInput!): Parish!
-  createTouristicPlace(input: CreateTouristicPlaceInput!): TouristicPlace!
   createCategory(input: CreateCategoryInput!): Category!
   createActivity(input: CreateActivityInput!): Activity!
 }
@@ -124,17 +109,6 @@ input CreateParishInput {
   name: String!
   code: Int
 }
-
-input SearchTouristicPlaceInput {
-  options: OptionsSearch
-  parishId: UUID
-}
-
-input CreateTouristicPlaceInput {
-  parishId: UUID!
-  name: String!
-}
-
 
 input SearchCategoryInput {
   options: OptionsSearch

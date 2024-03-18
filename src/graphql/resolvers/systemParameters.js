@@ -148,58 +148,6 @@ export default {
         results: parish,
       };
     },
-    touristicPlaceListAll: async (_, { search }, { models }) => {
-      const options = search?.options ?? null;
-      const parishId = search?.parishId ?? undefined;
-
-      const optionsFind = {
-        include: [
-          {
-            model: models.Responsible,
-            as: "Responsibles",
-          },
-        ],
-      };
-
-      if (parishId) {
-        optionsFind.where = {
-          parishId,
-        };
-      }
-
-      if (options !== null) {
-        if (options.limit > 0) {
-          optionsFind.limit = options.limit;
-        }
-        if (options.offset > 0) {
-          optionsFind.offset = options.offset;
-        }
-        if (options.orderBy) {
-          optionsFind.order = options.orderBy.map((field, index) => {
-            return [
-              field,
-              options.direction ? options.direction[index] ?? "ASC" : "ASC",
-            ];
-          });
-          optionsFind.include.order = optionsFind.order;
-        }
-      }
-
-      const touristicPlace = await models.TouristicPlace.findAll(optionsFind);
-
-      const infoPage = {
-        count: touristicPlace.length,
-        pages: 1,
-        current: 1,
-        next: false,
-        prev: false,
-      };
-
-      return {
-        infoPage,
-        results: touristicPlace,
-      };
-    },
     categoryListAll: async (_, { search }, { models }) => {
       const options = search?.options ?? null;
       //PRIORITARIO arreglar consulta para que busque las options y filter y segun eso haga las busquedas
@@ -379,33 +327,6 @@ export default {
         throw new Error("error");
       }
     },
-    createTouristicPlace: async (_, { input }, { models }) => {
-      try {
-        const { parishId, name } = input;
-
-        const result = await models.sequelizeInst.transaction(async (t) => {
-          const inpTouristicPlace = {
-            parishId,
-            name,
-          };
-
-          const touristicPlace = await models.TouristicPlace.create(
-            {
-              ...inpTouristicPlace,
-            },
-            { transaction: t }
-          );
-
-          return touristicPlace;
-        });
-
-        return result;
-      } catch (error) {
-        // PRIORITARIO Create error manager to handle internal messages or retries or others
-        console.log(error);
-        throw new Error("error");
-      }
-    },
     createCategory: async (_, { input }, { models }) => {
       try {
         const { name, pc } = input;
@@ -415,8 +336,8 @@ export default {
             name,
           };
 
-          if(pc){
-            inpCategory.pc=pc
+          if (pc) {
+            inpCategory.pc = pc;
           }
 
           const category = await models.Category.create(

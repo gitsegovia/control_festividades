@@ -1,0 +1,42 @@
+type TouristicPlace {
+  id: UUID!
+  name: String!
+  Responsibles: [Responsible!]
+  Summary: [Summary!]
+  SummaryToll: [SummaryToll!]
+  SummaryPublicEntity: [SummaryPublicEntity!]
+  Category: [Category!]
+}
+
+type TouristicPlaceResult {
+  infoPage: InfoPage
+  results: [TouristicPlace!]
+}
+
+type Query {
+  touristicPlaceListAll(
+    search: SearchTouristicPlaceInput
+  ): TouristicPlaceResult!
+  touristicPlaceReport(
+    search: SearchTouristicPlaceReportInput
+  ): [TouristicPlace!]
+}
+
+type Mutation {
+  createTouristicPlace(input: CreateTouristicPlaceInput!): TouristicPlace!
+}
+
+input SearchTouristicPlaceInput {
+  options: OptionsSearch
+  parishId: UUID
+}
+input SearchTouristicPlaceReportInput {
+  options: OptionsSearch
+  eventId: UUID
+  day: String
+}
+
+input CreateTouristicPlaceInput {
+  parishId: UUID!
+  name: String!
+}

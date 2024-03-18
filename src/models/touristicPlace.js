@@ -14,6 +14,27 @@ export default (sequelize) => {
       TouristicPlace.belongsToMany(models.Responsible, {
         through: models.ResponsibleTouristic,
       });
+      TouristicPlace.hasMany(models.Summary, {
+        foreignKey: {
+          name: "touristicPlaceId",
+          field: "touristicPlaceId",
+        },
+        as: "Summary",
+      });
+      TouristicPlace.hasMany(models.SummaryToll, {
+        foreignKey: {
+          name: "touristicPlaceId",
+          field: "touristicPlaceId",
+        },
+        as: "SummaryToll",
+      });
+      TouristicPlace.hasMany(models.SummaryToll, {
+        foreignKey: {
+          name: "touristicPlaceId",
+          field: "touristicPlaceId",
+        },
+        as: "SummaryPublicEntity",
+      });
     }
   }
 
