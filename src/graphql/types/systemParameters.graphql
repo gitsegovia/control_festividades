@@ -52,6 +52,7 @@ type Category {
   active: Boolean!
   numberCat: Int!
   code: String!
+  pc: Boolean!
   Activity: [Activity!]
 }
 
@@ -141,6 +142,7 @@ input SearchCategoryInput {
 
 input CreateCategoryInput {
   name: String!
+  pc: Boolean
 }
 
 input SearchActivityInput {
