@@ -148,9 +148,7 @@ export default {
       if (!findResponsible) {
         throw new Error("Responsible not found");
       }
-      if (touristicPlaceId && touristicPlaceId.length !== 1) {
-        throw new Error("Responsible cannot have more than one tourist ");
-      }
+      
       try {
         const result = await models.sequelizeInst.transaction(async (t) => {
           await findResponsible.setTouristicPlaces(touristicPlaceId, {
