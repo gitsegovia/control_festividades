@@ -60,7 +60,7 @@ export default (sequelize) => {
             number += valor[0].maxNumber;
           }
           category.numberCat = number;
-          user.code = `CT-${number}`;
+          category.code = `CT-${number}`;
         },
       },
       sequelize,
