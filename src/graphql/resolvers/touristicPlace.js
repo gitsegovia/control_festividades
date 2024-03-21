@@ -119,6 +119,14 @@ export default {
           include: {
             model: models.Activity,
             as: "Activity",
+            include: {
+              model: models.Summary,
+              as: "Summary",
+              include: {
+                model: models.Schedule,
+                as: "Schedule",
+              },
+            },
           },
         });
 
