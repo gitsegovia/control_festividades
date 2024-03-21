@@ -12,6 +12,7 @@ type PublicEntityResult {
 
 type Query {
   publicEntityListAll(search: SearchPublicEntityInput): PublicEntityResult!
+  publicEntityReport(search: SearchPublicEntityReportInput): [PublicEntity!]
 }
 
 type Mutation {
@@ -22,6 +23,12 @@ type Mutation {
 
 input SearchPublicEntityInput {
   options: OptionsSearch
+}
+
+input SearchPublicEntityReportInput {
+  options: OptionsSearch
+  eventId: UUID
+  day: String
 }
 
 input CreatePublicEntityInput {

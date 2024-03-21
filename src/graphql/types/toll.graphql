@@ -12,6 +12,7 @@ type TollResult {
 
 type Query {
   tollListAll(search: SearchTollInput): TollResult!
+  tollReport(search: SearchTollReportInput): [Toll!]
 }
 
 type Mutation {
@@ -22,6 +23,12 @@ type Mutation {
 
 input SearchTollInput {
   options: OptionsSearch
+}
+
+input SearchTollReportInput {
+  options: OptionsSearch
+  eventId: UUID
+  day: String
 }
 
 input CreateTollInput {

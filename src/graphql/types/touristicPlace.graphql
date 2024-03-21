@@ -2,9 +2,6 @@ type TouristicPlace {
   id: UUID!
   name: String!
   Responsibles: [Responsible!]
-  Summary: [Summary!]
-  SummaryToll: [SummaryToll!]
-  SummaryPublicEntity: [SummaryPublicEntity!]
   Category: [Category!]
 }
 
@@ -30,6 +27,7 @@ input SearchTouristicPlaceInput {
   options: OptionsSearch
   parishId: UUID
 }
+
 input SearchTouristicPlaceReportInput {
   options: OptionsSearch
   eventId: UUID

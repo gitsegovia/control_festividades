@@ -5,8 +5,8 @@ export default (sequelize) => {
     static associate(models) {
       Toll.hasMany(models.SummaryToll, {
         foreignKey: {
-          name: "publicEntityId",
-          field: "publicEntityId",
+          name: "tollId",
+          field: "tollId",
         },
         as: "SummaryToll",
       });

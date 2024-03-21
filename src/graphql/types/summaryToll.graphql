@@ -1,6 +1,7 @@
 type SummaryToll {
   id: UUID!
-  attended: Boolean
+  incoming: Int
+  outgoing: Int
   Toll: Toll!
   Event: Event!
   Schedule: Schedule!

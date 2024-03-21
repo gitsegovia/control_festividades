@@ -1,3 +1,6 @@
+import moment from "moment";
+import { Op } from "sequelize";
+
 export default {
   Query: {
     tollListAll: async (_, { search }, { models }) => {
@@ -44,6 +47,53 @@ export default {
         infoPage,
         results: tolls,
       };
+    },
+    tollReport: async (_, { search }, { models }) => {
+      const options = search?.options ?? null;
+      const eventId = search?.eventId ?? undefined;
+      const day = search?.day ?? undefined;
+
+      const dayEndOf = moment(day).endOf("day");
+      const dayStartOf = moment(day).startOf("day");
+
+      let eventActiveId = eventId ?? "";
+
+      if (!eventId) {
+        const eventActive = await models.Event.findOne({
+          where: {
+            active: true,
+          },
+        });
+        if (!eventActive) {
+          throw new Error("Not event active");
+        }
+        eventActiveId = eventActive.id;
+      }
+
+      const tolls = await models.Toll.findAll({
+        where: {
+          active: true,
+        },
+        include: {
+          model: models.SummaryToll,
+          as: "SummaryToll",
+          include: {
+            model: models.Schedule,
+            as: "Schedule",
+          },
+          where: {
+            eventId: eventActiveId,
+            createdAt: {
+              [Op.gte]: dayStartOf,
+            },
+            createdAt: {
+              [Op.lte]: dayEndOf,
+            },
+          },
+        },
+      });
+
+      return tolls;
     },
   },
   Mutation: {
