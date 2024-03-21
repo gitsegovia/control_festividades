@@ -59,6 +59,7 @@ export default {
       const options = search?.options ?? null;
       const eventId = search?.eventId ?? undefined;
       const day = search?.day ?? undefined;
+      const pc = search?.pc ?? undefined;
 
       const dayEndOf = moment(day).endOf("day");
       const dayStartOf = moment(day).startOf("day");
@@ -116,6 +117,10 @@ export default {
 
       for (const place of touristicPlace) {
         const categories = await models.Category.findAll({
+          where: {
+            active: true,
+            pc: pc ?? false,
+          },
           include: {
             model: models.Activity,
             as: "Activity",
@@ -125,6 +130,15 @@ export default {
               include: {
                 model: models.Schedule,
                 as: "Schedule",
+              },
+              where: {
+                eventId: eventActiveId,
+                createdAt: {
+                  [Op.gte]: dayStartOf,
+                },
+                createdAt: {
+                  [Op.lte]: dayEndOf,
+                },
               },
             },
           },

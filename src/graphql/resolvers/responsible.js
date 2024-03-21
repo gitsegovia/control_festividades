@@ -4,7 +4,13 @@ export default {
       const options = search?.options ?? null;
       //PRIORITARIO arreglar consulta para que busque las options y filter y segun eso haga las busquedas
       const optionsFind = {
-        include: { all: true, nested: true },
+        include: [
+          {
+            model: models.User,
+            as: "User",
+          },
+          "TouristicPlaces",
+        ],
       };
       /*{
         include: [
@@ -148,7 +154,7 @@ export default {
       if (!findResponsible) {
         throw new Error("Responsible not found");
       }
-      
+
       try {
         const result = await models.sequelizeInst.transaction(async (t) => {
           await findResponsible.setTouristicPlaces(touristicPlaceId, {
@@ -199,8 +205,8 @@ export default {
       }
       try {
         const result = await models.sequelizeInst.transaction(async (t) => {
-          findResponsible.permission = permission
-          await  findResponsible.save({
+          findResponsible.permission = permission;
+          await findResponsible.save({
             transaction: t,
           });
 

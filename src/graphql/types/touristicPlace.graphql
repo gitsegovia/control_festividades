@@ -33,6 +33,7 @@ input SearchTouristicPlaceInput {
 input SearchTouristicPlaceReportInput {
   options: OptionsSearch
   eventId: UUID
+  pc: Boolean
   day: String
 }
 
