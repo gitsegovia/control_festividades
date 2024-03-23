@@ -49,53 +49,69 @@ export default {
             };
         },
         scheduleAvailablePerTouristicPlace: async (_, { search }, { models }) => {
-            const { touristicPlaceId } = search
+            const { touristicPlaceId, toll } = search;
 
             const scheduleAll = await models.Schedule.findAll({
-                active: true
+                active: true,
             });
 
             const event = await models.Event.findOne({
                 where: {
-                    active: true
-                }
-            })
+                    active: true,
+                },
+            });
 
             if (!event) {
                 throw new Error("Event no active");
             }
 
-            const nowEndOf = moment().endOf("day")
-            const nowStartOf = moment().startOf("day")
+            const nowEndOf = moment().endOf("day");
+            const nowStartOf = moment().startOf("day");
 
             const whereCheck = {
                 eventId: event.id,
                 touristicPlaceId: touristicPlaceId,
                 createdAt: {
-                    [Op.gte]: nowStartOf
+                    [Op.and]: {
+                        [Op.gte]: nowStartOf,
+                        [Op.lte]: nowEndOf,
+                    },
                 },
-                createdAt: {
-                    [Op.lte]: nowEndOf
-                },
-            }
+            };
 
             const summary = await models.Summary.findAll({
-                where: whereCheck
-            })
+                where: whereCheck,
+            });
 
-            const scheduleReport = []
+            const scheduleReport = [];
 
-            summary.forEach(v => {
-                scheduleReport.push(v.scheduleId)
-            })
-
-            const schedule = []
-
-            scheduleAll.forEach(s => {
-                if (!scheduleReport.includes(s.id)) {
-                    schedule.push(s)
+            summary.forEach((v) => {
+                if (!scheduleReport.includes(v.scheduleId)) {
+                    scheduleReport.push(v.scheduleId);
                 }
-            })
+            });
+
+            if (toll) {
+
+                const summaryToll = await models.SummaryToll.findAll({
+                    where: whereCheck,
+                });
+
+
+                summaryToll.forEach((v) => {
+                    if (!scheduleReport.includes(v.scheduleId)) {
+                        scheduleReport.push(v.scheduleId);
+                    }
+                });
+            }
+
+            const schedule = [];
+
+            scheduleAll.forEach((s) => {
+                if (!scheduleReport.includes(s.id)) {
+                    schedule.push(s);
+                }
+            });
 
             const infoPage = {
                 count: schedule.length,
@@ -138,5 +154,5 @@ export default {
                 throw new Error("error");
             }
         },
-    }
-}
+    },
+};
