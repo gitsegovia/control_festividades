@@ -75,6 +75,9 @@ export default {
             await models.Event.update(
               { active: false },
               {
+                where: {
+                  active: true
+                },
                 transaction: t,
               }
             );
