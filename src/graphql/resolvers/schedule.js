@@ -52,7 +52,10 @@ export default {
             const { touristicPlaceId, toll } = search;;
 
             const scheduleAll = await models.Schedule.findAll({
-                active: true,
+                where: {
+                    active: true,
+                },
+                order: [["serial", "ASC"]]
             });
 
             const event = await models.Event.findOne({

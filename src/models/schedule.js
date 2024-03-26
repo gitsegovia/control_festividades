@@ -1,4 +1,4 @@
-import { Model, STRING, UUID, UUIDV4, BOOLEAN } from "sequelize";
+import { BOOLEAN, INTEGER, Model, STRING, UUID, UUIDV4 } from "sequelize";
 
 export default (sequelize) => {
   class Schedule extends Model {
@@ -30,6 +30,11 @@ export default (sequelize) => {
         type: BOOLEAN,
         defaultValue: true,
       },
+      serial: {
+        allowNull: false,
+        type: INTEGER,
+        defaultValue: 0
+      }
     },
     {
       sequelize,
