@@ -84,10 +84,10 @@ export default {
           where: {
             eventId: eventActiveId,
             createdAt: {
-              [Op.gte]: dayStartOf,
-            },
-            createdAt: {
-              [Op.lte]: dayEndOf,
+              [Op.and]: {
+                [Op.gte]: dayStartOf,
+                [Op.lte]: dayEndOf,
+              },
             },
           },
         },

@@ -135,10 +135,10 @@ export default {
                 touristicPlaceId: place.id,
                 eventId: eventActiveId,
                 createdAt: {
-                  [Op.gte]: dayStartOf,
-                },
-                createdAt: {
-                  [Op.lte]: dayEndOf,
+                  [Op.and]: {
+                    [Op.gte]: dayStartOf,
+                    [Op.lte]: dayEndOf,
+                  },
                 },
               },
             },
