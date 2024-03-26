@@ -49,7 +49,7 @@ export default {
             };
         },
         scheduleAvailablePerTouristicPlace: async (_, { search }, { models }) => {
-            const { touristicPlaceId, toll } = search;
+            const { touristicPlaceId, toll } = search;;
 
             const scheduleAll = await models.Schedule.findAll({
                 active: true,
