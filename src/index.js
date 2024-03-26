@@ -19,6 +19,7 @@ const schema = makeExecutableSchema({ typeDefs, resolvers });
 const serverApollo = new ApolloServer({
   schema,
   introspection: process.env.NODE_ENV !== "production",
+  cors: false,
 });
 
 startStandaloneServer(serverApollo, {
