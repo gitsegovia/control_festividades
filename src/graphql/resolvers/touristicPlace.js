@@ -132,6 +132,7 @@ export default {
                 as: "Schedule",
               },
               where: {
+                touristicPlaceId: place.id,
                 eventId: eventActiveId,
                 createdAt: {
                   [Op.gte]: dayStartOf,
