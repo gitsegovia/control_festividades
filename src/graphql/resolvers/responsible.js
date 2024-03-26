@@ -1,3 +1,6 @@
+import { Op } from "sequelize";
+import { encrypt } from "../../utils/security";
+
 export default {
   Query: {
     responsibleListAll: async (_, { search }, { models }) => {
@@ -58,68 +61,161 @@ export default {
   },
   Mutation: {
     createResponsible: async (_, { input }, { models }) => {
-      const { touristicPlaceId, dni, name, phone, email, password } = input;
+      const {
+        responsibleId,
+        touristicPlaceId,
+        dni,
+        name,
+        phone,
+        email,
+        password,
+      } = input;
 
-      const countUser = await models.User.count({
-        where: {
-          email,
-          typeUser: "Responsible",
-        },
-      });
-      if (countUser > 0) {
-        throw new AuthenticationError("User already exists");
-      }
-      const countResp = await models.Responsible.count({
-        where: {
-          dni,
-        },
-      });
-      if (countResp > 0) {
-        throw new AuthenticationError("Responsible already exists");
-      }
-
-      try {
-        const result = await models.sequelizeInst.transaction(async (t) => {
-          const inpUser = {
+      if (!responsibleId) {
+        const countUser = await models.User.count({
+          where: {
             email,
-            phone: "000000",
-            password,
             typeUser: "Responsible",
-            nameUser: email,
-          };
-
-          const inpResponsible = {
+          },
+        });
+        if (countUser > 0) {
+          throw new AuthenticationError("User already exists");
+        }
+        const countResp = await models.Responsible.count({
+          where: {
             dni,
-            name,
-            phone,
-            User: inpUser,
-          };
+          },
+        });
+        if (countResp > 0) {
+          throw new AuthenticationError("Responsible already exists");
+        }
 
-          const userResp = await models.Responsible.create(
-            {
-              ...inpResponsible,
-            },
-            {
-              include: {
-                model: models.User,
-                as: "User",
+        try {
+          const result = await models.sequelizeInst.transaction(async (t) => {
+            const inpUser = {
+              email,
+              phone: "000000",
+              password,
+              typeUser: "Responsible",
+              nameUser: email,
+            };
+
+            const inpResponsible = {
+              dni,
+              name,
+              phone,
+              User: inpUser,
+            };
+
+            const userResp = await models.Responsible.create(
+              {
+                ...inpResponsible,
               },
-              transaction: t,
+              {
+                include: {
+                  model: models.User,
+                  as: "User",
+                },
+                transaction: t,
+              }
+            );
+
+            if (touristicPlaceId && touristicPlaceId.length > 0) {
+              userResp.setTouristicPlaces(touristicPlaceId);
             }
-          );
 
-          if (touristicPlaceId && touristicPlaceId.length > 0) {
-            userResp.setTouristicPlaces(touristicPlaceId);
-          }
+            return userResp;
+          });
 
-          return userResp;
+          return result;
+        } catch (error) {
+          // PRIORITARIO Create error manager to handle internal messages or retries or others
+          console.log(error);
+          throw new Error("error");
+        }
+      } else {
+        const countUser = await models.User.count({
+          where: {
+            email,
+            typeUser: "Responsible",
+            responsibleId: {
+              [Op.not]: responsibleId,
+            },
+          },
+        });
+        if (countUser > 0) {
+          throw new AuthenticationError("User already exists");
+        }
+        const findResp = await models.Responsible.findOne({
+          where: {
+            id: responsibleId,
+          },
+          include: [
+            {
+              model: models.User,
+              as: "User",
+            },
+            "TouristicPlaces",
+          ],
         });
 
-        return result;
-      } catch (error) {
-        // PRIORITARIO Create error manager to handle internal messages or retries or others
-        console.log(error);
-        throw new Error("error");
+        if (!findResp) {
+          throw new Error("Not find responsible");
+        }
+
+        if (dni && dni !== findResp.dni) {
+          const countResp = await models.Responsible.count({
+            where: {
+              dni,
+            },
+          });
+          if (countResp > 0) {
+            throw new Error("Responsible already exists");
+          }
+        }
+
+        try {
+          const result = await models.sequelizeInst.transaction(async (t) => {
+            if (dni) {
+              findResp.dni = dni;
+            }
+            if (name) {
+              findResp.name = name;
+            }
+            if (phone) {
+              findResp.phone = phone;
+            }
+            if (email || password) {
+              if (email) {
+                findResp.User.email = email;
+              }
+              if (password) {
+                findResp.User.password = encrypt(password);
+              }
+              await findResp.User.save({ transaction: t });
+            }
+
+            if (touristicPlaceId) {
+              if (touristicPlaceId.length > 0) {
+                await findResp.setTouristicPlaces(touristicPlaceId, {
+                  transaction: t,
+                });
+              } else {
+                await findResp.removeTouristicPlaces(touristicPlaceId, {
+                  transaction: t,
+                });
+              }
+            }
+            await findResp.save({ transaction: t });
+            return findResp;
+          });
+
+          return result;
+        } catch (error) {
+          // PRIORITARIO Create error manager to handle internal messages or retries or others
+          console.log(error);
+          throw new Error("error");
+        }
       }
     },
     addTouristicPlaceToResponsible: async (_, { input }, { models }) => {

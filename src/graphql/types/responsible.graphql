@@ -28,9 +28,7 @@ type Mutation {
   removeTouristicPlaceToResponsible(
     input: RemoveTouristicPlaceToResponsibleInput
   ): Boolean!
-  setPermissionResponsible(
-    input: SetPermissionResponsibleInput
-  ): Responsible!
+  setPermissionResponsible(input: SetPermissionResponsibleInput): Responsible!
 }
 
 input SearchResponsibleInput {
@@ -38,12 +36,13 @@ input SearchResponsibleInput {
 }
 
 input CreateResponsibleInput {
+  responsibleId: UUID!
   touristicPlaceId: [UUID!]
-  dni: String!
-  name: String!
-  phone: String!
-  email: String!
-  password: String!
+  dni: String
+  name: String
+  phone: String
+  email: String
+  password: String
 }
 
 input AddTouristicPlaceToResponsibleInput {
@@ -59,4 +58,3 @@ input SetPermissionResponsibleInput {
   responsibleId: UUID!
   permission: String!
 }
-
