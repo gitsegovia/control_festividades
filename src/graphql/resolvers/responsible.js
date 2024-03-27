@@ -62,7 +62,7 @@ export default {
   Mutation: {
     createResponsible: async (_, { input }, { models }) => {
       const {
-        responsibleId,
+        responsibleId = null,
         touristicPlaceId,
         dni,
         name,
@@ -71,7 +71,7 @@ export default {
         password,
       } = input;
 
-      if (!responsibleId) {
+      if (responsibleId===null) {
         const countUser = await models.User.count({
           where: {
             email,
