@@ -79,7 +79,7 @@ export default {
           },
         });
         if (countUser > 0) {
-          throw new AuthenticationError("User already exists");
+          throw new Error("User already exists");
         }
         const countResp = await models.Responsible.count({
           where: {
@@ -87,7 +87,7 @@ export default {
           },
         });
         if (countResp > 0) {
-          throw new AuthenticationError("Responsible already exists");
+          throw new Error("Responsible already exists");
         }
 
         try {
@@ -144,7 +144,7 @@ export default {
           },
         });
         if (countUser > 0) {
-          throw new AuthenticationError("User already exists");
+          throw new Error("User already exists");
         }
         const findResp = await models.Responsible.findOne({
           where: {
