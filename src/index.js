@@ -41,6 +41,7 @@ const StartServer = async () => {
   // and our expressMiddleware function.
   app.use(
     "/",
+    cors("*"),
     bodyParser.json({ limit: "50mb" }),
     expressMiddleware(serverApollo, {
       context: async ({ req, res }) => {
