@@ -82,7 +82,7 @@ const StartServer = async () => {
         .sync({ alter: ALTER, force: FORCE })
         .then(() => {
           console.log(
-            `Running on http://localhost:${PORT} (${NODE_ENV}) with introspection(${
+            `Running in express on http://localhost:${PORT} (${NODE_ENV}) with introspection(${
               NODE_ENV !== "production"
             })`
           );
