@@ -1,4 +1,4 @@
-import { Model, UUID, UUIDV4, INTEGER } from "sequelize";
+import { Model, UUID, UUIDV4, INTEGER, DATEONLY } from "sequelize";
 
 export default (sequelize) => {
   class SummaryToll extends Model {
