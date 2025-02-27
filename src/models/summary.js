@@ -1,4 +1,4 @@
-import { Model, UUID, UUIDV4, INTEGER } from "sequelize";
+import { Model, UUID, UUIDV4, INTEGER, DATEONLY } from "sequelize";
 
 export default (sequelize) => {
   class Summary extends Model {
@@ -46,6 +46,10 @@ export default (sequelize) => {
         allowNull: false,
         type: INTEGER,
       },
+      dateRegister: {
+        allowNull: true,
+        type: DATEONLY
+      }
     },
     {
       sequelize,
