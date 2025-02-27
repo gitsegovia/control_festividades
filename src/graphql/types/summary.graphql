@@ -1,6 +1,7 @@
 type Summary {
   id: UUID!
   quantity: Int
+  dateRegister: Datatime
   Activity: Activity!
   Event: Event!
   Schedule: Schedule!
@@ -29,6 +30,7 @@ input CreateSummaryInput {
   eventId: UUID!
   scheduleId: UUID!
   touristicPlaceId: UUID!
+  dateRegister: Datatime
   listSummary: [ListSummaryInput!]!
   listSummaryPublicEntity: [ListSummaryPublicEntityInput!]!
   listSummaryToll: [ListSummaryTollInput!]!
