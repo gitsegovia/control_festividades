@@ -87,16 +87,6 @@ export default {
         attributes: [
           [sequelize.fn("DISTINCT", sequelize.col("codeReport")), "codeReport"],
         ],
-        distinct: true,
-      };
-
-      const reportesDistintos = await models.Summary.findAll({
-        where: {
-          eventId: eventId,
-        },
-        attributes: [
-          [sequelize.fn("DISTINCT", sequelize.col("codeReport")), "codeReport"],
-        ],
         include: [
           {
             model: models.Event,
@@ -108,16 +98,23 @@ export default {
             as: "Schedule",
             attributes: ["hour"],
           },
+          {
+            model: models.TouristicPlace,
+            as: "TouristicPlace",
+          },
         ],
-        group: ["Summary.codeReport", "Event.id", "Schedule.id"],
-      });
-
-      console.error("LISTADO DE CODIGOS", reportesDistintos);
+        group: [
+          "Summary.codeReport",
+          "Event.id",
+          "Schedule.id",
+          "TouristicPlace.id",
+        ],
+      };
 
       const summaries = await models.Summary.findAll(optionsFind);
 
       const infoPage = {
-        count: reportesDistintos.length,
+        count: summaries.length,
         pages: 1,
         current: 1,
         next: false,
@@ -126,7 +123,7 @@ export default {
 
       return {
         infoPage,
-        results: reportesDistintos,
+        results: summaries,
       };
     },
   },
