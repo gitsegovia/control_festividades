@@ -109,7 +109,6 @@ export default {
             attributes: ["hour"],
           },
         ],
-        raw: true,
         group: ["Summary.codeReport", "Event.id", "Schedule.id"],
       });
 
@@ -118,7 +117,7 @@ export default {
       const summaries = await models.Summary.findAll(optionsFind);
 
       const infoPage = {
-        count: summaries.length,
+        count: reportesDistintos.length,
         pages: 1,
         current: 1,
         next: false,
@@ -127,7 +126,7 @@ export default {
 
       return {
         infoPage,
-        results: summaries,
+        results: reportesDistintos,
       };
     },
   },
