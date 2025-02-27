@@ -2,6 +2,7 @@ type Summary {
   id: UUID!
   quantity: Int
   dateRegister: Datatime
+  codeReport: String
   Activity: Activity!
   Event: Event!
   Schedule: Schedule!
