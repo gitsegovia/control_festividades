@@ -15,6 +15,7 @@ type SummaryResult {
 
 type Query {
   summaryListAllByEvent(search: SearchSummaryByEventInput): SummaryResult!
+  codeReportListAllByEvent(search: SearchSummaryByEventInput): SummaryResult!
 }
 
 type Mutation {

@@ -75,6 +75,34 @@ export default {
         results: summaries,
       };
     },
+    codeReportListAllByEvent: async (_, { search }, { models }) => {
+      const { eventId } = search;
+      const options = search?.options ?? null;
+
+      const optionsFind = {
+        where: {
+          eventId: eventId,
+        },
+        attributes: ["codeReport"],
+        distinct: true,
+        include: [
+          {
+            model: models.Event,
+            as: "Event",
+            attributes: ["name"],
+          },
+          {
+            model: models.Schedule,
+            as: "Schedule",
+            attributes: ["hour"],
+          },
+        ],
+      };
+
+      const summaries = await models.Summary.findAll(optionsFind);
+
+      return summaries;
+    },
   },
   Mutation: {
     createSummary: async (_, { input }, { models }) => {
