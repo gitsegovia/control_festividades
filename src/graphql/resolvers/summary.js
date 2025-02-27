@@ -1,4 +1,5 @@
 import { getNumberFormatedText } from "../../utils/functions";
+import sequelize from "sequelize";
 
 export default {
   Query: {
