@@ -99,12 +99,12 @@ export default {
         ],
         include: [
           {
-            model: Event,
+            model: models.Event,
             as: "Event",
             attributes: ["name"],
           },
           {
-            model: Schedule,
+            model: models.Schedule,
             as: "Schedule",
             attributes: ["hour"],
           },
