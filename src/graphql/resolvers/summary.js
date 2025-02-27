@@ -101,7 +101,18 @@ export default {
 
       const summaries = await models.Summary.findAll(optionsFind);
 
-      return summaries;
+      const infoPage = {
+        count: summaries.length,
+        pages: 1,
+        current: 1,
+        next: false,
+        prev: false,
+      };
+
+      return {
+        infoPage,
+        results: summaries,
+      };
     },
   },
   Mutation: {
