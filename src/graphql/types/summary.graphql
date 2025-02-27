@@ -16,11 +16,20 @@ type SummaryResult {
 
 type Query {
   summaryListAllByEvent(search: SearchSummaryByEventInput): SummaryResult!
-  codeReportListAllByEvent(search: SearchSummaryByEventInput): SummaryResult!
+  codeReportSummaryListAllByEvent(
+    search: SearchSummaryByEventInput
+  ): SummaryResult!
+  codeReportSummaryPublicEntityListAllByEvent(
+    search: SearchSummaryByEventInput
+  ): SummaryResult!
+  codeReportSummaryTollListAllByEvent(
+    search: SearchSummaryByEventInput
+  ): SummaryResult!
 }
 
 type Mutation {
   createSummary(input: CreateSummaryInput!): String!
+  deleteSummaryByCodeReport(codeReport: String!): Boolean!
 }
 
 input SearchSummaryByEventInput {

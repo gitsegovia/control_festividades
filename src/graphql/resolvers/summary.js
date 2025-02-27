@@ -76,7 +76,7 @@ export default {
         results: summaries,
       };
     },
-    codeReportListAllByEvent: async (_, { search }, { models }) => {
+    codeReportSummaryListAllByEvent: async (_, { search }, { models }) => {
       const { eventId } = search;
       const options = search?.options ?? null;
 
@@ -111,7 +111,233 @@ export default {
         ],
       };
 
+      if (options !== null) {
+        if (options.limit > 0) {
+          optionsFind.limit = options.limit;
+        }
+        if (options.offset > 0) {
+          optionsFind.offset = options.offset;
+        }
+        if (options.orderBy) {
+          optionsFind.order = options.orderBy.map((field, index) => {
+            return [
+              field,
+              options.direction ? options.direction[index] ?? "ASC" : "ASC",
+            ];
+          });
+          optionsFind.include.order = optionsFind.order;
+        }
+      }
+
       const summaries = await models.Summary.findAll(optionsFind);
+
+      const infoPage = {
+        count: summaries.length,
+        pages: 1,
+        current: 1,
+        next: false,
+        prev: false,
+      };
+
+      return {
+        infoPage,
+        results: summaries,
+      };
+    },
+    codeReportSummaryListAllByEvent: async (_, { search }, { models }) => {
+      const { eventId } = search;
+      const options = search?.options ?? null;
+
+      const optionsFind = {
+        where: {
+          eventId: eventId,
+        },
+        attributes: [
+          [sequelize.fn("DISTINCT", sequelize.col("codeReport")), "codeReport"],
+        ],
+        include: [
+          {
+            model: models.Event,
+            as: "Event",
+            attributes: ["name"],
+          },
+          {
+            model: models.Schedule,
+            as: "Schedule",
+            attributes: ["hour"],
+          },
+          {
+            model: models.TouristicPlace,
+            as: "TouristicPlace",
+          },
+        ],
+        group: [
+          "Summary.codeReport",
+          "Event.id",
+          "Schedule.id",
+          "TouristicPlace.id",
+        ],
+      };
+
+      if (options !== null) {
+        if (options.limit > 0) {
+          optionsFind.limit = options.limit;
+        }
+        if (options.offset > 0) {
+          optionsFind.offset = options.offset;
+        }
+        if (options.orderBy) {
+          optionsFind.order = options.orderBy.map((field, index) => {
+            return [
+              field,
+              options.direction ? options.direction[index] ?? "ASC" : "ASC",
+            ];
+          });
+          optionsFind.include.order = optionsFind.order;
+        }
+      }
+
+      const summaries = await models.Summary.findAll(optionsFind);
+
+      const infoPage = {
+        count: summaries.length,
+        pages: 1,
+        current: 1,
+        next: false,
+        prev: false,
+      };
+
+      return {
+        infoPage,
+        results: summaries,
+      };
+    },
+    codeReportSummaryPublicEntityListAllByEvent: async (
+      _,
+      { search },
+      { models }
+    ) => {
+      const { eventId } = search;
+      const options = search?.options ?? null;
+
+      const optionsFind = {
+        where: {
+          eventId: eventId,
+        },
+        attributes: [
+          [sequelize.fn("DISTINCT", sequelize.col("codeReport")), "codeReport"],
+        ],
+        include: [
+          {
+            model: models.Event,
+            as: "Event",
+            attributes: ["name"],
+          },
+          {
+            model: models.Schedule,
+            as: "Schedule",
+            attributes: ["hour"],
+          },
+          {
+            model: models.TouristicPlace,
+            as: "TouristicPlace",
+          },
+        ],
+        group: [
+          "SummaryPublicEntity.codeReport",
+          "Event.id",
+          "Schedule.id",
+          "TouristicPlace.id",
+        ],
+      };
+
+      if (options !== null) {
+        if (options.limit > 0) {
+          optionsFind.limit = options.limit;
+        }
+        if (options.offset > 0) {
+          optionsFind.offset = options.offset;
+        }
+        if (options.orderBy) {
+          optionsFind.order = options.orderBy.map((field, index) => {
+            return [
+              field,
+              options.direction ? options.direction[index] ?? "ASC" : "ASC",
+            ];
+          });
+          optionsFind.include.order = optionsFind.order;
+        }
+      }
+
+      const summaries = await models.SummaryPublicEntity.findAll(optionsFind);
+
+      const infoPage = {
+        count: summaries.length,
+        pages: 1,
+        current: 1,
+        next: false,
+        prev: false,
+      };
+
+      return {
+        infoPage,
+        results: summaries,
+      };
+    },
+    codeReportSummaryTollListAllByEvent: async (_, { search }, { models }) => {
+      const { eventId } = search;
+      const options = search?.options ?? null;
+
+      const optionsFind = {
+        where: {
+          eventId: eventId,
+        },
+        attributes: [
+          [sequelize.fn("DISTINCT", sequelize.col("codeReport")), "codeReport"],
+        ],
+        include: [
+          {
+            model: models.Event,
+            as: "Event",
+            attributes: ["name"],
+          },
+          {
+            model: models.Schedule,
+            as: "Schedule",
+            attributes: ["hour"],
+          },
+          {
+            model: models.TouristicPlace,
+            as: "TouristicPlace",
+          },
+        ],
+        group: [
+          "SummaryToll.codeReport",
+          "Event.id",
+          "Schedule.id",
+          "TouristicPlace.id",
+        ],
+      };
+
+      if (options !== null) {
+        if (options.limit > 0) {
+          optionsFind.limit = options.limit;
+        }
+        if (options.offset > 0) {
+          optionsFind.offset = options.offset;
+        }
+        if (options.orderBy) {
+          optionsFind.order = options.orderBy.map((field, index) => {
+            return [
+              field,
+              options.direction ? options.direction[index] ?? "ASC" : "ASC",
+            ];
+          });
+          optionsFind.include.order = optionsFind.order;
+        }
+      }
+
+      const summaries = await models.SummaryToll.findAll(optionsFind);
 
       const infoPage = {
         count: summaries.length,
@@ -219,6 +445,36 @@ export default {
           return registerSummaryCount;
         });
 
+        return result;
+      } catch (error) {
+        // PRIORITARIO Create error manager to handle internal messages or retries or others
+        console.log(error);
+        throw new Error("error");
+      }
+    },
+    deleteSummaryByCodeReport: async (_, { codeReport }, { models }) => {
+      try {
+        const result = await models.sequelizeInst.transaction(async (t) => {
+          await models.Summary.destroy({
+            where: {
+              codeReport: codeReport,
+            },
+            transaction: t,
+          });
+          await models.SummaryPublicEntity.destroy({
+            where: {
+              codeReport: codeReport,
+            },
+            transaction: t,
+          });
+          await models.SummaryToll.destroy({
+            where: {
+              codeReport: codeReport,
+            },
+            transaction: t,
+          });
+          return true;
+        });
         return result;
       } catch (error) {
         // PRIORITARIO Create error manager to handle internal messages or retries or others
