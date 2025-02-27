@@ -90,6 +90,31 @@ export default {
         distinct: true,
       };
 
+      const reportesDistintos = await Summary.findAll({
+        where: {
+          eventId: eventId,
+        },
+        attributes: [
+          [sequelize.fn("DISTINCT", sequelize.col("codeReport")), "codeReport"],
+        ],
+        include: [
+          {
+            model: Event,
+            as: "Event",
+            attributes: ["name"],
+          },
+          {
+            model: Schedule,
+            as: "Schedule",
+            attributes: ["hour"],
+          },
+        ],
+        raw: true,
+        group: ["Summary.codeReport", "Event.id", "Schedule.id"],
+      });
+
+      console.error("LISTADO DE CODIGOS", reportesDistintos);
+
       const summaries = await models.Summary.findAll(optionsFind);
 
       const infoPage = {
