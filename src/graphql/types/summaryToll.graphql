@@ -5,6 +5,7 @@ type SummaryToll {
   Toll: Toll!
   Event: Event!
   Schedule: Schedule!
+  dateRegister: Datatime
   TouristicPlace: TouristicPlace!
 }
 
