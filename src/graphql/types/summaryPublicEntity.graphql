@@ -1,6 +1,7 @@
 type SummaryPublicEntity {
   id: UUID!
   attended: Boolean
+  dateRegister: Datatime
   PublicEntity: PublicEntity!
   Event: Event!
   Schedule: Schedule!
