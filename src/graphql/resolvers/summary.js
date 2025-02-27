@@ -83,7 +83,9 @@ export default {
         where: {
           eventId: eventId,
         },
-        attributes: ["codeReport"],
+        attributes: [
+          [sequelize.fn("DISTINCT", sequelize.col("codeReport")), "codeReport"],
+        ],
         distinct: true,
       };
 
