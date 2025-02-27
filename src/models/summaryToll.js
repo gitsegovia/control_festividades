@@ -50,6 +50,10 @@ export default (sequelize) => {
         allowNull: false,
         type: INTEGER,
       },
+      dateRegister: {
+        allowNull: true,
+        type: DATEONLY
+      }
     },
     {
       sequelize,
