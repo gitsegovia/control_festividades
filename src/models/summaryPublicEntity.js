@@ -1,4 +1,4 @@
-import { Model, UUID, UUIDV4, BOOLEAN } from "sequelize";
+import { Model, UUID, UUIDV4, BOOLEAN, DATEONLY } from "sequelize";
 
 export default (sequelize) => {
   class SummaryPublicEntity extends Model {
