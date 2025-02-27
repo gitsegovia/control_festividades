@@ -81,6 +81,7 @@ export default {
           eventId,
           scheduleId,
           touristicPlaceId,
+          dateRegister,
           listSummary,
           listSummaryPublicEntity,
           listSummaryToll,
@@ -95,6 +96,7 @@ export default {
                 scheduleId,
                 touristicPlaceId,
                 quantity: v.quantity,
+                dateRegister,
                 activityId: v.activityId,
               };
             });
@@ -109,6 +111,7 @@ export default {
               return {
                 eventId,
                 scheduleId,
+                dateRegister,
                 touristicPlaceId,
                 attended: v.attended,
                 publicEntityId: v.publicEntityId,
@@ -128,6 +131,7 @@ export default {
               return {
                 eventId,
                 scheduleId,
+                dateRegister,
                 touristicPlaceId,
                 incoming: v.incoming,
                 outgoing: 0,
