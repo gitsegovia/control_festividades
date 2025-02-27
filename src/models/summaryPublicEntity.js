@@ -46,6 +46,10 @@ export default (sequelize) => {
         allowNull: false,
         type: BOOLEAN,
       },
+      dateRegister: {
+        allowNull: true,
+        type: DATEONLY
+      }
     },
     {
       sequelize,
