@@ -90,7 +90,7 @@ export default {
         distinct: true,
       };
 
-      const reportesDistintos = await Summary.findAll({
+      const reportesDistintos = await models.Summary.findAll({
         where: {
           eventId: eventId,
         },
