@@ -78,7 +78,7 @@ export default {
       const whereCheck = {
         eventId: event.id,
         touristicPlaceId: touristicPlaceId,
-        createdAt: {
+        dateRegister: {
           [Op.and]: {
             [Op.gte]: nowStartOf,
             [Op.lte]: nowEndOf,
