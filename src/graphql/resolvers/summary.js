@@ -85,18 +85,6 @@ export default {
         },
         attributes: ["codeReport"],
         distinct: true,
-        include: [
-          {
-            model: models.Event,
-            as: "Event",
-            attributes: ["name"],
-          },
-          {
-            model: models.Schedule,
-            as: "Schedule",
-            attributes: ["hour"],
-          },
-        ],
       };
 
       const summaries = await models.Summary.findAll(optionsFind);
