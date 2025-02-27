@@ -18,7 +18,7 @@ type Query {
 }
 
 type Mutation {
-  createSummary(input: CreateSummaryInput!): Boolean!
+  createSummary(input: CreateSummaryInput!): String!
 }
 
 input SearchSummaryByEventInput {

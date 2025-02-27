@@ -52,8 +52,12 @@ export default (sequelize) => {
       },
       dateRegister: {
         allowNull: true,
-        type: DATEONLY
-      }
+        type: DATEONLY,
+      },
+      codeReport: {
+        allowNull: true,
+        type: STRING,
+      },
     },
     {
       sequelize,

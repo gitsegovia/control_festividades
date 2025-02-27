@@ -29,6 +29,11 @@ export default (sequelize) => {
         allowNull: false,
         type: INTEGER,
       },
+      countSummary: {
+        allowNull: false,
+        type: INTEGER,
+        defaultValue: 0,
+      },
       active: {
         allowNull: false,
         type: BOOLEAN,

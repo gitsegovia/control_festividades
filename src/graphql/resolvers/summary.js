@@ -1,3 +1,5 @@
+import { getNumberFormatedText } from "../../utils/functions";
+
 export default {
   Query: {
     summaryListAllByEvent: async (_, { search }, { models }) => {
@@ -87,8 +89,19 @@ export default {
           listSummaryToll,
         } = input;
 
+        const eventExist = await models.Event.findByPk(eventId);
+
+        if (!eventExist) {
+          throw "Event not found";
+        }
+
+        const registerSummaryCount = `${eventExist.name[0]}${
+          eventExist.year
+        }-${getNumberFormatedText(eventExist.countSummary + 1)}-${Math.floor(
+          Math.random() * 10
+        )}`;
+
         const result = await models.sequelizeInst.transaction(async (t) => {
-          
           if (listSummary && listSummary.length > 0) {
             const inpSummary = listSummary.map((v) => {
               return {
@@ -97,27 +110,29 @@ export default {
                 touristicPlaceId,
                 quantity: v.quantity,
                 dateRegister,
+                codeReport: registerSummaryCount,
                 activityId: v.activityId,
               };
             });
-  
+
             const activity = await models.Summary.bulkCreate(inpSummary, {
               transaction: t,
             });
           }
 
-          if (listSummaryPublicEntity && listSummaryPublicEntity.length> 0) {
+          if (listSummaryPublicEntity && listSummaryPublicEntity.length > 0) {
             const inpSummaryPublicEntity = listSummaryPublicEntity.map((v) => {
               return {
                 eventId,
                 scheduleId,
                 dateRegister,
+                codeReport: registerSummaryCount,
                 touristicPlaceId,
                 attended: v.attended,
                 publicEntityId: v.publicEntityId,
               };
             });
-  
+
             const entity = await models.SummaryPublicEntity.bulkCreate(
               inpSummaryPublicEntity,
               {
@@ -125,26 +140,32 @@ export default {
               }
             );
           }
-          
+
           if (listSummaryToll && listSummaryToll.length > 0) {
             const inpSummaryToll = listSummaryToll.map((v) => {
               return {
                 eventId,
                 scheduleId,
                 dateRegister,
+                codeReport: registerSummaryCount,
                 touristicPlaceId,
                 incoming: v.incoming,
                 outgoing: 0,
                 tollId: v.tollId,
               };
             });
-  
+
             const toll = await models.SummaryToll.bulkCreate(inpSummaryToll, {
               transaction: t,
             });
           }
 
-          return true;
+          eventExist.countSummary = eventExist.countSummary + 1;
+          await eventExist.save({
+            transaction: t,
+          });
+
+          return registerSummaryCount;
         });
 
         return result;
