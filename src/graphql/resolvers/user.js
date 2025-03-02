@@ -1,7 +1,7 @@
 import {
   checkToken,
   doLoginResponsible,
-  doLoginEmployee,
+  doLoginEmployee,encrypt
 } from "../../utils/auth";
 import { AuthenticationError } from "../../utils/graphqlError";
 
@@ -87,6 +87,20 @@ export default {
     },
   },
   Mutation: {
+    updatePassword: async (_, {userId, password}, {models}) => {
+       try {
+        await models.User.update({
+          password: encrypt(password)
+        },{
+          where: {
+            id: userId
+          }
+        })
+         return true;
+      } catch (error) {
+        throw AuthenticationError(error);
+      }
+    },
     me: (_, { token, onTokenExpiration }, { models }) => {
       try {
         return checkToken({
