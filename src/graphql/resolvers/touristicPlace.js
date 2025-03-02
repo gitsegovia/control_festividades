@@ -115,6 +115,22 @@ export default {
         ],
       });*/
 
+      const whereCheck = {
+        touristicPlaceId: place.id,
+        eventId: eventActiveId,
+      }
+
+      if(day !== undefined){
+        Object.assign(whereCheck, {
+          dateRegister: {
+            [Op.and]: {
+              [Op.gte]: dayStartOf,
+              [Op.lte]: dayEndOf
+            }
+          }
+        })
+      }
+
       for (const place of touristicPlace) {
         const categories = await models.Category.findAll({
           where: {
@@ -131,16 +147,7 @@ export default {
                 model: models.Schedule,
                 as: "Schedule",
               },
-              where: {
-                touristicPlaceId: place.id,
-                eventId: eventActiveId,
-                dateRegister: {
-                  [Op.and]: {
-                    [Op.gte]: dayStartOf,
-                    [Op.lte]: dayEndOf,
-                  },
-                },
-              },
+              where: whereCheck,
             },
           },
         });
