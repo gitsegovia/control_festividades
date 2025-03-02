@@ -4,7 +4,7 @@ import {
   doLoginEmployee,
 } from "../../utils/auth";
 import { AuthenticationError } from "../../utils/graphqlError";
-import { encrypt } from "../utils/security";
+import { encrypt } from "../../utils/security";
 
 export default {
   Query: {
