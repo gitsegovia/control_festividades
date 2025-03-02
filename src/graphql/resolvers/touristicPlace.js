@@ -134,7 +134,7 @@ export default {
               where: {
                 touristicPlaceId: place.id,
                 eventId: eventActiveId,
-                createdAt: {
+                dateRegister: {
                   [Op.and]: {
                     [Op.gte]: dayStartOf,
                     [Op.lte]: dayEndOf,
