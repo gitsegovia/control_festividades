@@ -69,6 +69,7 @@ export default {
         phone,
         email,
         password,
+        main=false,
       } = input;
 
       if (responsibleId===null) {
@@ -104,6 +105,7 @@ export default {
               dni,
               name,
               phone,
+              main,
               User: inpUser,
             };
 
