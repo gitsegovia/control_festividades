@@ -116,7 +116,6 @@ export default {
       });*/
 
       const whereCheck = {
-        touristicPlaceId: place.id,
         eventId: eventActiveId,
       }
 
@@ -147,7 +146,10 @@ export default {
                 model: models.Schedule,
                 as: "Schedule",
               },
-              where: whereCheck,
+              where: {
+                ...whereCheck,
+                touristicPlaceId: place.id
+              },
             },
           },
         });
