@@ -84,6 +84,9 @@ export default {
         include: {
           model: models.Responsible,
           as: "Responsibles",
+          where: {
+            main: true
+          }
         },
       });
 
