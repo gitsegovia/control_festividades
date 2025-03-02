@@ -1,4 +1,4 @@
-import { Model, UUID, UUIDV4, STRING } from "sequelize";
+import { Model, UUID, UUIDV4, STRING, BOOLEAN  } from "sequelize";
 
 export default (sequelize) => {
   class Responsible extends Model {
@@ -42,6 +42,11 @@ export default (sequelize) => {
         allowNull: false,
         type: STRING,
         defaultValue: ""
+      },
+      main: {
+        allowNull: false,
+        type: BOOLEAN,
+        defaultValue: false,
       }
     },
     {
