@@ -27,7 +27,7 @@ type Mutation {
   loginEmployee(input: LoginInput!): AuthPayLoad!
   loginResponsible(input: LoginInput!): AuthPayLoad!
   createUserResponsible(input: CreateUserResponsibleInput!): User!
-updatePassword(userId: UUID!): Boolean!
+updatePassword(userId: UUID!, password: String!): Boolean!
   suspendUser(userId: UUID!): Boolean!
 }
 
