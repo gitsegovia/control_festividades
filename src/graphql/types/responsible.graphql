@@ -4,6 +4,7 @@ type Responsible {
   name: String!
   phone: String!
   permission: String!
+  main: Boolean!
   TouristicPlaces: [TouristicPlace!]
   User: User!
 }
