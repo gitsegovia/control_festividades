@@ -120,10 +120,13 @@ export default {
         ],
         group: [
           "Activity.id",
+          "Activity->Category.id",
           "Summary.codeReport",
           "Event.id",
           "Schedule.id",
           "TouristicPlace.id",
+          "TouristicPlace->Parish.id",
+          "TouristicPlace->Parish->Municipality.id"
         ],
       };
 
