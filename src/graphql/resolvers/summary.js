@@ -83,11 +83,8 @@ export default {
       const optionsFind = {
         where: {
           eventId: eventId,
-          codeReport: codeReport ? codeReport : undefined
+          codeReport: codeReport ?? null
         },
-        attributes: [
-          [sequelize.fn("DISTINCT", sequelize.col("codeReport")), "codeReport"],
-        ],
         include: [
           {
             model: models.Schedule,
@@ -117,17 +114,7 @@ export default {
               },
             },
           },
-        ],
-        group: [
-          "Activity.id",
-          "Activity->Category.id",
-          "Summary.codeReport",
-          "Event.id",
-          "Schedule.id",
-          "TouristicPlace.id",
-          "TouristicPlace->Parish.id",
-          "TouristicPlace->Parish->Municipality.id"
-        ],
+        ]
       };
 
       if (options !== null) {
