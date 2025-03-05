@@ -82,8 +82,7 @@ export default {
 
       const optionsFind = {
         where: {
-          eventId: eventId,
-          codeReport: codeReport ?? null
+          eventId: eventId
         },
         include: [
           {
@@ -133,6 +132,12 @@ export default {
           });
           optionsFind.include.order = optionsFind.order;
         }
+      }
+
+     if(codeReport){
+        Object.assign(optionsFind.where, {
+          codeReport: codeReport
+        })
       }
 
       const summaries = await models.Summary.findAll(optionsFind);
