@@ -159,74 +159,7 @@ export default {
         results: summaries,
       };
     },
-    codeReportSummaryListAllByEvent: async (_, { search }, { models }) => {
-      const { eventId } = search;
-      const options = search?.options ?? null;
-
-      const optionsFind = {
-        where: {
-          eventId: eventId,
-        },
-        attributes: [
-          [sequelize.fn("DISTINCT", sequelize.col("codeReport")), "codeReport"],
-        ],
-        include: [
-          {
-            model: models.Event,
-            as: "Event",
-            attributes: ["name"],
-          },
-          {
-            model: models.Schedule,
-            as: "Schedule",
-            attributes: ["hour"],
-          },
-          {
-            model: models.TouristicPlace,
-            as: "TouristicPlace",
-          },
-        ],
-        group: [
-          "Summary.codeReport",
-          "Event.id",
-          "Schedule.id",
-          "TouristicPlace.id",
-        ],
-      };
-
-      if (options !== null) {
-        if (options.limit > 0) {
-          optionsFind.limit = options.limit;
-        }
-        if (options.offset > 0) {
-          optionsFind.offset = options.offset;
-        }
-        if (options.orderBy) {
-          optionsFind.order = options.orderBy.map((field, index) => {
-            return [
-              field,
-              options.direction ? options.direction[index] ?? "ASC" : "ASC",
-            ];
-          });
-          optionsFind.include.order = optionsFind.order;
-        }
-      }
-
-      const summaries = await models.Summary.findAll(optionsFind);
-
-      const infoPage = {
-        count: summaries.length,
-        pages: 1,
-        current: 1,
-        next: false,
-        prev: false,
-      };
-
-      return {
-        infoPage,
-        results: summaries,
-      };
-    },
+ 
     codeReportSummaryPublicEntityListAllByEvent: async (
       _,
       { search },
