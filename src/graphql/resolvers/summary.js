@@ -77,30 +77,45 @@ export default {
       };
     },
     codeReportSummaryListAllByEvent: async (_, { search }, { models }) => {
-      const { eventId } = search;
+      const { eventId, codeReport } = search;
       const options = search?.options ?? null;
 
       const optionsFind = {
         where: {
           eventId: eventId,
+          codeReport: codeReport ? codeReport : undefined
         },
         attributes: [
           [sequelize.fn("DISTINCT", sequelize.col("codeReport")), "codeReport"],
         ],
         include: [
           {
-            model: models.Event,
-            as: "Event",
-            attributes: ["name"],
-          },
-          {
             model: models.Schedule,
             as: "Schedule",
-            attributes: ["hour"],
+          },
+          {
+            model: models.Event,
+            as: "Event",
+          },
+          {
+            model: models.Activity,
+            as: "Activity",
+            include: {
+              model: models.Category,
+              as: "Category",
+            },
           },
           {
             model: models.TouristicPlace,
             as: "TouristicPlace",
+            include: {
+              model: models.Parish,
+              as: "Parish",
+              include: {
+                model: models.Municipality,
+                as: "Municipality",
+              },
+            },
           },
         ],
         group: [
