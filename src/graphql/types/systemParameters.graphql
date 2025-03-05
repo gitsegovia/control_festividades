@@ -54,7 +54,6 @@ type Activity {
   id: UUID!
   name: String!
   active: Boolean!
-  Category: Category!
   Summary: [Summary!]
 }
 
