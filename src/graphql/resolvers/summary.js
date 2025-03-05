@@ -119,6 +119,10 @@ export default {
           },
         ],
         group: [
+          "Activity.id",
+          "Category.id",
+          "Parish.id",
+          "Municipality.id",
           "Summary.codeReport",
           "Event.id",
           "Schedule.id",
