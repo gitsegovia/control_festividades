@@ -202,6 +202,10 @@ export default {
             model: models.Summary,
             as: "Summary",
           },
+          {
+            model: models.Category,
+            as: "Category"
+          }
         ],
       };
 
