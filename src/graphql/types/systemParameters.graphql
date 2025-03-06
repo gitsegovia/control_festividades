@@ -55,6 +55,7 @@ type Activity {
   name: String!
   active: Boolean!
   Summary: [Summary!]
+  Category: Category
 }
 
 type ActivityResult {
