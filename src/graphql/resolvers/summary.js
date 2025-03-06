@@ -115,7 +115,10 @@ export default {
               },
               {
                 model: models.Responsible,
-                as: "Responsibles"
+                as: "Responsibles",
+                where: {
+                  main: true
+                },
               },
             ],
           },
