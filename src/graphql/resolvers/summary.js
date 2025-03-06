@@ -115,7 +115,7 @@ export default {
               },
               {
                 model: models.Responsible,
-                as: "Responsible"
+                as: "Responsibles"
               },
             ],
           },
