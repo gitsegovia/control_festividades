@@ -104,14 +104,20 @@ export default {
           {
             model: models.TouristicPlace,
             as: "TouristicPlace",
-            include: {
+            include: [
+              {
               model: models.Parish,
               as: "Parish",
-              include: {
-                model: models.Municipality,
-                as: "Municipality",
+                include: {
+                  model: models.Municipality,
+                  as: "Municipality",
+                },
               },
-            },
+              {
+                model: models.Responsibles,
+                as: "Responsible"
+              },
+            ],
           },
         ]
       };
