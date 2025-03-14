@@ -1,5 +1,5 @@
 import moment from "moment";
-import sequelize, { Op } from "sequelize";
+import { Op } from "sequelize";
 
 export default {
   Query: {
@@ -236,33 +236,39 @@ export default {
             active: true,
             pc: pc ?? false,
           },
-          include: {
-            model: models.Activity,
-            as: "Activity",
-            include: {
-              model: models.Summary,
-              as: "Summary",
-              include: [
-                {
-                  model: models.Schedule,
-                  as: "Schedule",
-                },
-                {
-                  model: models.Event,
-                  as: "Event",
-                },
-              ],
+        });
+
+        for (const category of categories) {
+          const activities = await models.Activity.findAll({
+            where: {
+              categoryId: category.id,
+            },
+          });
+          for (const activity of activities) {
+            const summaries = await models.Summary.findAll({
+              include: {
+                model: models.Schedule,
+                as: "Schedule",
+              },
               where: {
                 ...whereCheck,
                 touristicPlaceId: place.id,
+                activityId: activity.id,
               },
               attributes: [
                 [sequelize.fn("SUM", sequelize.col("quantity")), "quantity"],
               ],
-              group: ["Category.id", "Activity.id", "Event.id", "Schedule.id"],
-            },
-          },
-        });
+              group: [
+                "Event.id",
+                "Schedule.id",
+                "TouristicPlace.id",
+                "Activity.id",
+              ],
+            });
+            activity.Activities = summaries;
+          }
+          category.Activities = activities;
+        }
 
         listTouristicPlace.push({
           id: place.id,
