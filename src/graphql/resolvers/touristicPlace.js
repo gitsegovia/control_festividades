@@ -258,12 +258,7 @@ export default {
               attributes: [
                 [sequelize.fn("SUM", sequelize.col("quantity")), "quantity"],
               ],
-              group: [
-                "Event.id",
-                "Schedule.id",
-                "TouristicPlace.id",
-                "Activity.id",
-              ],
+              group: ["Schedule.id"],
             });
             activity.Activities = summaries;
           }
