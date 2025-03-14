@@ -1,5 +1,5 @@
 import moment from "moment";
-import { Op } from "sequelize";
+import sequelize, { Op } from "sequelize";
 
 export default {
   Query: {
