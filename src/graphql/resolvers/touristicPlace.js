@@ -85,8 +85,8 @@ export default {
           model: models.Responsible,
           as: "Responsibles",
           where: {
-            main: true
-          }
+            main: true,
+          },
         },
       });
 
@@ -120,17 +120,17 @@ export default {
 
       const whereCheck = {
         eventId: eventActiveId,
-      }
+      };
 
-      if(day !== undefined){
+      if (day !== undefined) {
         Object.assign(whereCheck, {
           dateRegister: {
             [Op.and]: {
               [Op.gte]: dayStartOf,
-              [Op.lte]: dayEndOf
-            }
-          }
-        })
+              [Op.lte]: dayEndOf,
+            },
+          },
+        });
       }
 
       for (const place of touristicPlace) {
@@ -151,8 +151,115 @@ export default {
               },
               where: {
                 ...whereCheck,
-                touristicPlaceId: place.id
+                touristicPlaceId: place.id,
               },
+            },
+          },
+        });
+
+        listTouristicPlace.push({
+          id: place.id,
+          name: place.name,
+          Responsibles: place.Responsibles,
+          Category: categories,
+        });
+      }
+
+      return listTouristicPlace;
+    },
+    touristicPlaceReportGroup: async (_, { search }, { models }) => {
+      const options = search?.options ?? null;
+      const eventId = search?.eventId ?? undefined;
+      const pc = search?.pc ?? undefined;
+
+      const listTouristicPlace = [];
+
+      let eventActiveId = eventId ?? "";
+
+      if (!eventId) {
+        const eventActive = await models.Event.findOne({
+          where: {
+            active: true,
+          },
+        });
+        if (!eventActive) {
+          throw new Error("Not event active");
+        }
+        eventActiveId = eventActive.id;
+      }
+
+      const touristicPlace = await models.TouristicPlace.findAll({
+        include: {
+          model: models.Responsible,
+          as: "Responsibles",
+          where: {
+            main: true,
+          },
+        },
+      });
+
+      /*const categories = await models.Category.findAll();
+
+      const summaries = await models.Summary.findAll({
+        where: {
+          eventId: eventActiveId,
+          createdAt: {
+            [Op.gte]: nowStartOf,
+          },
+          createdAt: {
+            [Op.lte]: nowEndOf,
+          },
+        },
+        include: [
+          {
+            model: models.Activity,
+            as: "Activity",
+            include: {
+              model: models.Category,
+              as: "Category",
+            },
+          },
+          {
+            model: models.Schedule,
+            as: "Schedule"
+          },
+        ],
+      });*/
+
+      const whereCheck = {
+        eventId: eventActiveId,
+      };
+
+      for (const place of touristicPlace) {
+        const categories = await models.Category.findAll({
+          where: {
+            active: true,
+            pc: pc ?? false,
+          },
+          include: {
+            model: models.Activity,
+            as: "Activity",
+            include: {
+              model: models.Summary,
+              as: "Summary",
+              include: [
+                {
+                  model: models.Schedule,
+                  as: "Schedule",
+                },
+                {
+                  model: models.Event,
+                  as: "Event",
+                },
+              ],
+              where: {
+                ...whereCheck,
+                touristicPlaceId: place.id,
+              },
+              attributes: [
+                [sequelize.fn("SUM", sequelize.col("quantity")), "quantity"],
+              ],
+              group: ["Summary.quantity", "Event.id", "Schedule.id"],
             },
           },
         });

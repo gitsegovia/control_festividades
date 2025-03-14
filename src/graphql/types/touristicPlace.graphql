@@ -17,6 +17,9 @@ type Query {
   touristicPlaceReport(
     search: SearchTouristicPlaceReportInput
   ): [TouristicPlace!]
+  touristicPlaceReportGroup(
+    search: SearchTouristicPlaceReportInput
+  ): [TouristicPlace!]
 }
 
 type Mutation {
