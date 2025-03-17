@@ -230,7 +230,10 @@ export default {
         eventId: eventActiveId,
       };
 
+      let placeAdd = false;
+      let categoryAdd = false;
       for (const place of touristicPlace) {
+        placeAdd = false;
         const categories = await models.Category.findAll({
           where: {
             active: true,
@@ -239,11 +242,13 @@ export default {
         });
 
         for (const category of categories) {
+          categoryAdd = false;
           const activities = await models.Activity.findAll({
             where: {
               categoryId: category.id,
             },
           });
+
           for (const activity of activities) {
             const summaries = await models.Summary.findAll({
               include: {
@@ -260,17 +265,25 @@ export default {
               ],
               group: ["Schedule.id"],
             });
-            activity.Activities = summaries;
+            if (summaries.length > 0) {
+              categoryAdd = true;
+              activity.Summary = summaries;
+            }
           }
-          category.Activities = activities;
+          if (categoryAdd) {
+            category.Activity = activities;
+            placeAdd = true;
+          }
         }
 
-        listTouristicPlace.push({
-          id: place.id,
-          name: place.name,
-          Responsibles: place.Responsibles,
-          Category: categories,
-        });
+        if (placeAdd) {
+          listTouristicPlace.push({
+            id: place.id,
+            name: place.name,
+            Responsibles: place.Responsibles,
+            Category: categories,
+          });
+        }
       }
 
       return listTouristicPlace;
