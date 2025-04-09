@@ -288,6 +288,73 @@ export default {
 
       return listTouristicPlace;
     },
+    categoryReportGroup: async (_, { search }, { models }) => {
+      const options = search?.options ?? null;
+      const eventId = search?.eventId ?? undefined;
+      const pc = search?.pc ?? undefined;
+      const day = search?.day ?? undefined;
+
+      let eventActiveId = eventId ?? "";
+
+      if (!eventId) {
+        const eventActive = await models.Event.findOne({
+          where: {
+            active: true,
+          },
+        });
+        if (!eventActive) {
+          throw new Error("Not event active");
+        }
+        eventActiveId = eventActive.id;
+      }
+
+      const whereCheck = {
+        eventId: eventActiveId,
+      };
+      if (day !== undefined) {
+        whereCheck.dateRegister = moment(day).format("YYYY-MM-DD");
+      }
+
+      let listCategories = [];
+      const categories = await models.Category.findAll({
+        where: {
+          active: true,
+          pc: pc ?? false,
+        },
+      });
+
+      for (const category of categories) {
+        const activities = await models.Activity.findAll({
+          where: {
+            categoryId: category.id,
+          },
+        });
+
+        for (const activity of activities) {
+          const summaries = await models.Summary.findAll({
+            include: {
+              model: models.Schedule,
+              as: "Schedule",
+            },
+            where: {
+              ...whereCheck,
+              activityId: activity.id,
+            },
+            attributes: [
+              [sequelize.fn("SUM", sequelize.col("quantity")), "quantity"],
+            ],
+            group: ["Schedule.id"],
+          });
+          if (summaries.length > 0) {
+            activity.Summary = summaries;
+          }
+        }
+        category.Activity = activities;
+        listCategories.push(category);
+      }
+
+      return listCategories;
+    },
   },
   Mutation: {
     createTouristicPlace: async (_, { input }, { models }) => {
